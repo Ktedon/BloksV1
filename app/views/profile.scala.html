@@ -1,4 +1,4 @@
-@(name: String)(implicit request: RequestHeader, user: models.PublicUser, numFriended: Int, numFriends: Int)
+@(name: String)(implicit request: RequestHeader, user: models.PublicUser, numFriended: Int, numFriends: Int, isFriended: Boolean)
 
 @main("Welcome to Bloks") {
 
@@ -47,10 +47,6 @@
                     <h5 class="container">
                         Gender: @user.gender
                     </h5>
-                    <br>
-                    <h5 class="container">
-                        Sex: @user.biologicalSex
-                    </h5>
                 </div>
             </div>
             <div class="col xs-4 sm-4 lg-4 xl-4">
@@ -66,11 +62,7 @@
                     </h5>
                     <br>
                     <h5 class="container">
-                        Friends: @numFriends
-                    </h5>
-                    <br>
-                    <h5 class="container">
-                        Friended: @numFriended
+                        Sex: @user.biologicalSex
                     </h5>
                 </div>
 
@@ -108,14 +100,10 @@
               </div><br><br>
 
           <div class="row infoBar">
-
-                  <div class="col xs-4 sm-4 md-4 lg-4 xl-4" align="center">
-                    <button class="green inverted hover-grow large"> Friend </button>
-                  </div>
-                  <div class="col xs-4 sm-4 md-4 lg-4 xl-4" align="center">
+                  <div class="col xs-6 sm-6 md-6 lg-6 xl-6" align="center">
                     <a href="/home/poke/@user.id"><button class="blue inverted hover-grow large"> Poke </button></a>
                   </div>
-                  <div class="col xs-4 sm-4 md-4 lg-4 xl-4" align="center">
+                  <div class="col xs-6 sm-6 md-6 lg-6 xl-6" align="center">
                     <a href="/home/@name/message/@user.id"><button class="yellow inverted hover-grow large"> Message </button></a>
                   </div>
               </div>

@@ -127,7 +127,8 @@ class HomeController @Inject() (
                                 request,
                                 models.PublicUser.publicUserApply(profileUserFound),
                                 numFriends,
-                                numFriended
+                                numFriended,
+                                true
                               )
                             )
                           case None                   =>

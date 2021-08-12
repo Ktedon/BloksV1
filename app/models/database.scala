@@ -41,6 +41,10 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
       dateOfRegistration: java.sql.Date
   ): Future[Option[Int]] = {
 
+    if (SQLInjectionPrevention.injectionCheck(name, email, state)) {
+      return Future.successful(None)
+    }
+
     db.run(
       BloksSchool += BloksSchoolRow(
         -1,
@@ -73,6 +77,10 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
       password: String
   ): Future[Option[BloksUserRow]] = {
 
+    if (SQLInjectionPrevention.injectionCheck(email, password)) {
+      return Future.successful(None)
+    }
+
     db.run(
       BloksUser
         .filter(userRows =>
@@ -100,6 +108,10 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
       password: String
   ): Future[Option[BloksUserRow]] = {
 
+    if (SQLInjectionPrevention.injectionCheck(email, password)) {
+      return Future.successful(None)
+    }
+
     db.run(
       BloksUser
         .filter(userRows =>
@@ -119,6 +131,11 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
   }
 
   def modifyUserValidation(email: String, password: String): Future[Boolean] = {
+
+    if (SQLInjectionPrevention.injectionCheck(email, password)) {
+      return Future.successful(false)
+    }
+
     db.run(
       BloksUser
         .filter(userRows =>
@@ -229,6 +246,10 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
   // }
 
   def addUser(data: controllers.RegisterForm): Future[Option[BloksUserRow]] = {
+    if (SQLInjectionPrevention.injectionCheck(data.name, data.email, data.relStatus, data.gender, data.biologicalSex, data.biography, data.password)) {
+      return Future.successful(None)
+    }
+
     validateUserNoEmailVerification(data.email, Blake3.hex(data.password, 64))
       .flatMap { user =>
         if (user.isEmpty) {
@@ -274,6 +295,9 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
   }
 
   def deleteUser(email: String, password: String): Future[Boolean] = {
+    if (SQLInjectionPrevention.injectionCheck(email, password)) {
+      return Future.successful(false)
+    }
     db.run(
       BloksUser
         .filter(userRows =>
@@ -288,6 +312,9 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
       email: String,
       password: String
   ): Future[Seq[NotificationRow]] = {
+    if (SQLInjectionPrevention.injectionCheck(email, password)) {
+      return Future.successful(Seq.empty)
+    }
 
     validateUser(email, password).flatMap { user =>
       user match {
@@ -308,6 +335,10 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
       fromUserEmail: String,
       fromUserProfilePic: String
   ): Future[Boolean] = {
+
+    if (SQLInjectionPrevention.injectionCheck(email, password, fromUserName, fromUserEmail, fromUserProfilePic)) {
+      return Future.successful(false)
+    }
 
     validateUser(email, password).flatMap { user =>
       user match {
@@ -335,6 +366,9 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
       password: String,
       notifID: Int
   ): Future[Boolean] = {
+    if (SQLInjectionPrevention.injectionCheck(email, password)) {
+      return Future.successful(false)
+    }
     validateUser(email, password).flatMap { user =>
       user match {
         case Some(found) =>
@@ -351,6 +385,10 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
       password: String,
       query: String
   ): Future[Tuple2[Seq[BlokGroupRow], Seq[PublicUser]]] = {
+
+    if (SQLInjectionPrevention.injectionCheck(email, password, query)) {
+      return Future.successful((Seq.empty, Seq.empty))
+    }
 
     validateUser(email, password).flatMap { user =>
       user match {
@@ -380,6 +418,9 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
   }
 
   def getGroups(email: String, password: String): Future[Seq[BlokGroupRow]] = {
+    if (SQLInjectionPrevention.injectionCheck(email, password)) {
+      return Future.successful(Seq.empty)
+    }
     validateUser(email, password).flatMap { user =>
       user match {
         case Some(found) =>
@@ -398,6 +439,10 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
       groupName: String,
       groupType: Short
   ): Future[Boolean] = {
+
+    if (SQLInjectionPrevention.injectionCheck(email, password, groupName)) {
+      return Future.successful(false)
+    }
 
     validateUser(email, password).flatMap { user =>
       user.headOption match {
@@ -423,6 +468,9 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
       email: String,
       password: String
   ): Future[Seq[GroupMembershipRow]] = {
+    if (SQLInjectionPrevention.injectionCheck(email, password)) {
+      return Future.successful(Seq.empty)
+    }
     validateUser(email, password).flatMap { user =>
       user match {
         case Some(found) =>
@@ -442,6 +490,9 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
       password: String,
       groupID: Int
   ): Future[Boolean] = {
+    if (SQLInjectionPrevention.injectionCheck(email, password)) {
+      return Future.successful(false)
+    }
     validateUser(email, password).flatMap { user =>
       user match {
         case Some(found) =>
@@ -459,6 +510,9 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
       password: String,
       groupID: Int
   ): Future[Boolean] = {
+    if (SQLInjectionPrevention.injectionCheck(email, password)) {
+      return Future.successful(false)
+    }
     validateUser(email, password).flatMap { user =>
       user match {
         case Some(found) =>
@@ -505,6 +559,10 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
       userId: Int
   ): Future[Boolean] = {
 
+    if (SQLInjectionPrevention.injectionCheck(title, text)) {
+      return Future.successful(false)
+    }
+
     db.run(
       GroupThread += GroupThreadRow(
         -1,
@@ -519,6 +577,9 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
   }
 
   def addMessage(from: Int, to: Int, message: String): Future[Boolean] = {
+    if (SQLInjectionPrevention.injectionCheck(message)) {
+      return Future.successful(false)
+    }
     db.run(
       Message += MessageRow(
         -1,
@@ -548,6 +609,9 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
       fromUserProfilePic: String,
       toUser: Int
   ): Future[Boolean] = {
+    if (SQLInjectionPrevention.injectionCheck(fromUserName, fromUserEmail, fromUserProfilePic)) {
+      return Future.successful(false)
+    }
     db.run(
       Notification += NotificationRow(
         -1,
@@ -568,7 +632,10 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
     }
   }
 
-  def changeIcon(userId: Int, newIcon: String): Future[Boolean] =
+  def changeIcon(userId: Int, newIcon: String): Future[Boolean] = {
+    if (SQLInjectionPrevention.injectionCheck(newIcon)) {
+      return Future.successful(false)
+    }
     db.run(
       (
         for {
@@ -582,8 +649,12 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
         false
       }
     }
+  }
 
-  def changePassword(userId: Int, newPassword: String): Future[Boolean] =
+  def changePassword(userId: Int, newPassword: String): Future[Boolean] = {
+    if (SQLInjectionPrevention.injectionCheck(newPassword)) {
+      return Future.successful(false)
+    }
     db.run(
       (
         for {
@@ -597,6 +668,7 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
         false
       }
     }
+  }
 
   def deleteAccount(userId: Int): Future[Boolean] = {
     val queries = Seq(
@@ -621,6 +693,9 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
   }
 
   def changeGender(userId: Int, newGender: String): Future[Boolean] = {
+    if (SQLInjectionPrevention.injectionCheck(newGender)) {
+      return Future.successful(false)
+    }
     db.run(
       (
         for {
@@ -653,6 +728,9 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
   }
 
   def changeSex(userId: Int, newSex: String): Future[Boolean] = {
+    if (SQLInjectionPrevention.injectionCheck(newSex)) {
+      return Future.successful(false)
+    }
     db.run(
       (
         for {
@@ -701,6 +779,9 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
   }
 
   def changeRelStatus(userId: Int, newStatus: String): Future[Boolean] = {
+    if (SQLInjectionPrevention.injectionCheck(newStatus)) {
+      return Future.successful(false)
+    }
     db.run(
       (
         for {
@@ -717,6 +798,9 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
   }
 
   def changeBiography(userId: Int, newBiography: String): Future[Boolean] = {
+    if (SQLInjectionPrevention.injectionCheck(newBiography)) {
+      return Future.successful(false)
+    }
     db.run(
       (
         for {
@@ -733,6 +817,9 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
   }
 
   def testEmailValidationKey(email: String, password: String, key: String): Future[Boolean] = {
+    if (SQLInjectionPrevention.injectionCheck(email, password, key)) {
+      return Future.successful(false)
+    }
     db.run(
       BloksUser
         .filter(userRows =>
@@ -755,6 +842,9 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
   }
 
   def getEmailValidationKey(email: String, password: String): Future[Option[String]] = {
+    if (SQLInjectionPrevention.injectionCheck(email, password)) {
+      return Future.successful(None)
+    }
     db.run(
       BloksUser
         .filter(userRows =>
@@ -771,4 +861,5 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
       }
     }
   }
+
 }
