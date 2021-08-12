@@ -1,0 +1,251 @@
+@(username: String, group: String, form1: Form[GroupSearchForm], form: Form[ThreadCreateForm], currentUser: models.PublicUser)(implicit request: RequestHeader, messagesProvider: MessagesProvider, groupData: models.PublicGroup, threads: Seq[models.Tables.GroupThreadRow], threadsUsers: Seq[Tuple2[models.Tables.GroupThreadRow, models.Tables.BloksUserRow]])
+
+@main("Welcome to Bloks") {
+
+<nav class="navbar white navbar-color" style="box-shadow: 0px 5px 5px black; position: fixed;">
+    <a href="/home/@username" class="navbar-brand" style="color: black;">
+      <img src="@routes.Assets.versioned("images/method-draw-image-1.svg")" alt="Kiwi standing on oval" style="width: 180px;">
+    </a>
+    <input class="navbar-menu-target" type="checkbox" id="example-nav">
+    <label class="navbar-menu-toggle" for="example-nav"><span class="navbar-icon"></span></label>
+    <ul class="navbar-menu-items" >
+        <li>
+            <a href="/home/@username"><span style="color: black;">Home</span></a>
+        </li>
+        <li>
+            <a href="/home/@currentUser.id/portfolio"><span style="color: black;">Portfolio</span></a>
+        </li>
+        <li>
+            <a href="/home/@username/groups"><span style="color: black;">Groups</span></a>
+        </li>
+        <li>
+            <a href="/home/@username/settings"><span style="color: black;">Settings</span></a>
+        </li>
+        <li>
+            <a href="/home/@username/donate"><span style="color: black;">Donate</span></a>
+        </li>
+    </ul>
+</nav>
+
+<div style="height: 350px; transform: translateY(45px);">
+   <div align="center">
+      <div class="container">
+        @helper.form(action = routes.HomeController.groupSearchPost(username), Symbol("class") -> "form") {
+          @helper.CSRF.formField
+          <div class="finder">
+             <div class="finder__outer">
+                <div class="finder__inner">
+                   <div class="finder__icon" ref="icon"></div>
+
+                      @helper.inputText(form1("query")
+                        , Symbol("_label") -> null
+                        , Symbol("_showConstraints") -> false
+                        , Symbol("class") -> "finder__input"
+                        , Symbol("placeholder") -> "Social Justice Unit"
+                        , Symbol("style") -> "margin-top: 10px;"
+                      )
+
+
+
+                </div>
+             </div>
+          </div>
+       }
+      </div>
+   </div>
+</div>
+
+<div class="footer" style="padding-bottom:10px;">
+  <div style="margin-top: 100px;" class="footer">
+  <div class="cardCustom" style="width: 70%; margin-top: 140px; margin-left: 15%;">
+    <div class="card-header">
+      <div style=" transform: translateY(-100px);">
+        <div class="card-header-title">
+
+
+          <div class="row gapless">
+            <div class="col xs-4 sm-4 lg-4 xl-4">
+            </div>
+            <div class="col xs-4 sm-4 lg-4 xl-4">
+                 <img src="@groupData.icon" alt="k" class="icon column" style="border-width: 4px; height: 23.333vw; width: 23.333vw;" align="center">
+            </div>
+            <div class="col xs-4 sm-4 lg-4 xl-4">
+              <div>
+
+
+
+              </div>
+            </div>
+          </div>
+          <h2 align="center">Name: @groupData.name</h2><br><br>
+          @{
+            if((groupData.`type`) == 0) {<h4 style="transform: translateY(-50px);">Type: Election discource</h4>}
+            else if ((groupData.`type`) == 1) {<h4 style="transform: translateY(-50px);">Type: Faculty discussion</h4>}
+
+            else if ((groupData.`type`) == 2) {<h4 style="transform: translateY(-50px);">Type: Weird nerd stuff / homework help hotline</h4>}
+            else if ((groupData.`type`) == 3) {<h4 style="transform: translateY(-50px);">Type: Friend clique</h4>}
+            else if ((groupData.`type`) == 4) {<h4 style="transform: translateY(-50px);">Type: Emotional support</h4>}
+            else if ((groupData.`type`) == 5) {<h4 style="transform: translateY(-50px);">Type: School ops</h4>}
+            else if ((groupData.`type`) == 6) {<h4 style="transform: translateY(-50px);">Type: Totally \"sober\" party spots</h4>}
+            else if ((groupData.`type`) == 7) {<h4 style="transform: translateY(-50px);">Type: Cult stuff</h4>}
+
+            else if ((groupData.`type`) == 8) {<h4 style="transform: translateY(-50px);">Type: Site easter eggs</h4>}
+            else if ((groupData.`type`) == 9) {<h4 style="transform: translateY(-50px);">Type: Games</h4>}
+            else if ((groupData.`type`) == 10) {<h4 style="transform: translateY(-50px);">Type: Television/Movies</h4>}
+            else if ((groupData.`type`) == 11) {<h4 style="transform: translateY(-50px);">Type: Memes</h4>}
+            else if ((groupData.`type`) == 12) {<h4 style="transform: translateY(-50px);">Type: Sports</h4>}
+            else if ((groupData.`type`) == 13) {<h4 style="transform: translateY(-50px);">Type: Cars</h4>}
+            else if ((groupData.`type`) == 14) {<h4 style="transform: translateY(-50px);">Type: Philosophy</h4>}
+            else if ((groupData.`type`) == 15) {<h4 style="transform: translateY(-50px);">Type: Teen drama</h4>}
+            else if ((groupData.`type`) == 16) {<h4 style="transform: translateY(-50px);">Type: Soy random</h4>}
+            else if ((groupData.`type`) == 17) {<h4 style="transform: translateY(-50px);">Type: Shitty Classes and Teachers</h4>}
+            else if ((groupData.`type`) == 18) {<h4 style="transform: translateY(-50px);">Type: Equal rights and opportunity</h4>}
+            else if ((groupData.`type`) == 19) {<h4 style="transform: translateY(-50px);">Type: Music</h4>}
+            else  {<h4 style="transform: translateY(-50px);">Other</h4>}
+          }
+
+          <div>
+
+
+
+
+              <div class="banner" style="text-align: left; background-color: lightgray;">
+                  <div class="banner-header">
+                      <h5>Threads:</h5>
+                  </div>
+
+
+
+                  <div class="banner-body">
+                    <div>Create Message:</div>
+                      @helper.form(action = routes.HomeController.createThreadPost(username, group, 1)
+                      , Symbol("class") -> "form-control") {
+                        @helper.CSRF.formField
+                        @helper.inputText(form("title")
+                          , Symbol("_label") -> null
+                          , Symbol("_showConstraints") -> false
+                          , Symbol("placeholder") -> "title"
+                          , Symbol("style") -> "width: 90%; margin-top: 20px; margin-left: 5%;"
+                        )
+
+                        @helper.textarea(form("text")
+                          , Symbol("_label") -> null
+                          , Symbol("_showConstraints") -> false
+                          , Symbol("placeholder") -> "text"
+                          , Symbol("style") -> "width: 90%; margin-left: 5%; max-width: 90%; min-width: 90%;"
+                        )
+                        <input type="text" id="parentID" name="parentID" value="0" style="display: none">
+
+                        <button type="submit" class="hover-grow inverted indigo" style="margin-left: 5%;">Submit</button>
+                      }
+                      <br>
+                      <div style="background-color: darkgray; height: 1px;"></div><br>
+
+                      <div style="width: 90%; margin-left: 5%; max-height: 500px; overflow: scroll;">
+                        @threadsUsers.reverse.map { thread =>
+
+
+
+                          @if(currentUser.id == thread._1.userId) {
+
+                            <div class="row">
+                                <div class="col xs-6 sm-8 md-10 lg-10 xl-11">
+                                    <div class="collapsible styled indigo" style="width: 60%; margin-left: 40%;">
+                                      <input type="checkbox" class="collapsible-toggle" id="@(thread._1.id) styled" name="collapsible-checkbox" checked />
+                                      <label class="collapsible-header" for="@(thread._1.id) styled">
+                                          @thread._1.threadTitle <span style="font-size: 15px; color: lightgray;">@thread._1.threadDate</span>
+                                      </label>
+                                      <div class="collapsible-body">
+                                          <p style="word-break: break-all;">@thread._1.thread</p>
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="col xs-6 sm-4 md-2 lg-2 xl-1">
+                                  <a href="/home/@(thread._2.id)/portfolio">
+                                    <img src="@thread._2.profilePic" alt="k" class="icon column" style="border-width: 1px; height: 45px; width: 45px; border-radius: 4px;" align="center">
+                                  </a>
+
+                                </div>
+
+
+                            </div>
+
+
+                          } else {
+
+
+
+                            <div class="row">
+                                <div class="col xs-6 sm-4 md-2 lg-2 xl-1">
+                                  <a href="/home/@(thread._2.id)/portfolio">
+                                    <img src="@thread._2.profilePic" alt="k" class="icon column" style="border-width: 1px; height: 45px; width: 45px; border-radius: 4px;" align="center">
+                                  </a>
+
+                                </div>
+                                <div class="col xs-6 sm-8 md-10 lg-10 xl-11">
+                                    <div class="collapsible styled red" style="width: 60%;">
+                                      <input type="checkbox" class="collapsible-toggle" id="@(thread._1.id) styled" name="collapsible-checkbox" checked />
+                                      <label class="collapsible-header" for="@(thread._1.id) styled">
+                                          @thread._1.threadTitle <span style="font-size: 15px; color: lightgray;">@thread._1.threadDate</span>
+                                      </label>
+                                      <div class="collapsible-body">
+                                          <p style="word-break: break-all;">
+                                            @thread._1.thread
+                                          </p>
+                                      </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                          }
+
+
+                        }
+                      </div>
+              </div>
+          </div>
+          </div>
+        </div>
+      </div>
+
+  </div>
+
+
+</div>
+</div>
+<div class="footer" style="background-color: lightgray; width: 100%;">
+    <div class="row">
+      <div class="col xs-12 sm-12 md-6 lg-4 xl-4">
+          <div style="width: 80%; margin-left: 10%; height: 160px;">
+            <h5>HELP:</h5>
+            <a href="#" style="text-decoration: none;">FAQ</a><br>
+            <a href="#" style="text-decoration: none;">Constitution</a><br>
+            <a href="#" style="text-decoration: none;">Settings</a><br>
+            <a href="#" style="text-decoration: none;">Logout</a>
+          </div>
+        </div>
+        <div class="col xs-12 sm-12 md-6 lg-4 xl-4">
+          <div style="width: 80%; margin-left: 10%; height: 160px;">
+            <h5>ABOUT US:</h5>
+            <a href="#" style="text-decoration: none;">Contact</a><br>
+            <a href="#" style="text-decoration: none;">About</a><br>
+            <a href="#" style="text-decoration: none;">eXul Organization</a><br>
+            <a href="#" style="text-decoration: none;">FAQ About Us</a>
+          </div>
+        </div>
+        <div class="col xs-12 sm-12 md-6 lg-4 xl-4">
+          <div style="width: 80%; margin-left: 10%; height: 160px;">
+            <h5>NAVIGATE:</h5>
+            <a href="#" style="text-decoration: none;">Home</a><br>
+            <a href="#" style="text-decoration: none;">Portfolio</a><br>
+            <a href="#" style="text-decoration: none;">Settings</a><br>
+            <a href="#" style="text-decoration: none;">Donate</a>
+          </div>
+        </div>
+    </div>
+  </div>
+
+
+
+}

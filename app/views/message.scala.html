@@ -1,0 +1,153 @@
+@(username: String, form: Form[CreateMessageForm], fromID: Int, toID: Int, toUser: models.Tables.BloksUserRow, user: models.Tables.BloksUserRow)(implicit request: RequestHeader, messagesProvider: MessagesProvider, messages: Seq[models.Tables.MessageRow])
+
+@main("Welcome to Bloks") {
+
+<div style="display: none;" id="myID">@fromID</div>
+
+<nav class="navbar white navbar-color" style="box-shadow: 0px 5px 5px black; position: fixed;">
+    <a href="/home/@username" class="navbar-brand" style="color: black;">
+      <img src="@routes.Assets.versioned("images/method-draw-image-1.svg")" alt="Kiwi standing on oval" style="width: 180px;">
+    </a>
+    <input class="navbar-menu-target" type="checkbox" id="example-nav">
+    <label class="navbar-menu-toggle" for="example-nav"><span class="navbar-icon"></span></label>
+    <ul class="navbar-menu-items" >
+        <li>
+            <a href="/home/@username"><span style="color: black;">Home</span></a>
+        </li>
+        <li>
+            <a href="/home/@fromID/portfolio"><span style="color: black;">Portfolio</span></a>
+        </li>
+        <li>
+            <a href="/home/@username/groups"><span style="color: black;">Groups</span></a>
+        </li>
+        <li>
+            <a href="/home/@username/settings"><span style="color: black;">Settings</span></a>
+        </li>
+        <li>
+            <a href="/home/@username/donate"><span style="color: black;">Donate</span></a>
+        </li>
+    </ul>
+</nav>
+
+
+<div class="footer" style="padding-bottom:150px;">
+
+
+
+<div style="margin-top: 150px; height: 500px; overflow: scroll; width: 70%; margin-left: 15%;" id="chat-area">
+
+  @messages.reverse.map { message =>
+
+    @if(message.toId != toID) {
+
+      <div class="row">
+          <div class="col xs-6 sm-8 md-10 lg-10 xl-11">
+            <div class="notification green" style="text-align: left;">
+                @message.message
+            </div>
+          </div>
+
+          <div class="col xs-6 sm-4 md-2 lg-2 xl-1">
+            <a href="/home/@(toID)/portfolio">
+              <img src="@toUser.profilePic" alt="k" class="icon column" style="border-width: 1px; height: 45px; width: 45px; border-radius: 4px;" align="center">
+            </a>
+          </div>
+
+
+      </div>
+
+
+    } else {
+
+
+
+      <div class="row">
+          <div class="col xs-6 sm-4 md-2 lg-2 xl-1">
+            <a href="/home/@user.id/portfolio">
+              <img src="@user.profilePic" alt="k" class="icon column" style="border-width: 1px; height: 45px; width: 45px; border-radius: 4px;" align="center">
+            </a>
+
+          </div>
+          <div class="col xs-6 sm-8 md-10 lg-10 xl-11">
+             <div class="notification yellow" style="text-align: right;">
+                @message.message
+              </div>
+          </div>
+
+      </div>
+    }
+  }
+</div>
+
+
+
+<div style="width: 70%; margin-left: 15%; margin-bottom: 10px; overflow: auto;" class="form-control">
+  <!-- <textarea id="chat-input" style="float: left; resize: vertical;"></textarea> -->
+
+
+
+  @helper.form(action = routes.HomeController.createMessagePost
+    , Symbol("class") -> "form-control"
+  ) {
+    @helper.CSRF.formField
+
+
+
+      <input type="" name="toID" style="display: none;" value="@toID">
+
+
+      @helper.textarea(form("message")
+        , Symbol("_label") -> null
+        , Symbol("_showConstraints") -> false
+        , Symbol("class") -> "input"
+        , Symbol("placeholder") -> "Message Content"
+        , Symbol("style") -> "float: left; resize: vertical; "
+      )
+
+<button style="float: left; margin-top: 30px;" type="submit" class="indigo inverted medium hover-grow">SEND</button>
+
+  }
+
+</div>
+
+
+
+
+<br><br>
+
+</div>
+<div class="footer" style="background-color: lightgray; width: 100%;">
+    <div class="row">
+      <div class="col xs-12 sm-12 md-6 lg-4 xl-4">
+          <div style="width: 80%; margin-left: 10%; height: 160px;">
+            <h5>HELP:</h5>
+            <a href="#" style="text-decoration: none;">FAQ</a><br>
+            <a href="#" style="text-decoration: none;">Constitution</a><br>
+            <a href="#" style="text-decoration: none;">Settings</a><br>
+            <a href="#" style="text-decoration: none;">Logout</a>
+          </div>
+        </div>
+        <div class="col xs-12 sm-12 md-6 lg-4 xl-4">
+          <div style="width: 80%; margin-left: 10%; height: 160px;">
+            <h5>ABOUT US:</h5>
+            <a href="#" style="text-decoration: none;">Contact</a><br>
+            <a href="#" style="text-decoration: none;">About</a><br>
+            <a href="#" style="text-decoration: none;">eXul Organization</a><br>
+            <a href="#" style="text-decoration: none;">FAQ About Us</a>
+          </div>
+        </div>
+        <div class="col xs-12 sm-12 md-6 lg-4 xl-4">
+          <div style="width: 80%; margin-left: 10%; height: 160px;">
+            <h5>NAVIGATE:</h5>
+            <a href="#" style="text-decoration: none;">Home</a><br>
+            <a href="#" style="text-decoration: none;">Portfolio</a><br>
+            <a href="#" style="text-decoration: none;">Settings</a><br>
+            <a href="#" style="text-decoration: none;">Donate</a>
+          </div>
+        </div>
+    </div>
+  </div>
+
+
+  <script src="@routes.Assets.versioned("javascripts/chat.js")" type="text/javascript"></script>
+}

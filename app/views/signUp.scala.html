@@ -1,0 +1,289 @@
+@(registerForm: Form[RegisterForm])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+
+
+
+@main("Welcome to Bloks") {
+
+
+<nav class="navbar white navbar-color" style="box-shadow: 0px 5px 5px black;">
+	<a href="/" class="navbar-brand" style="color: black;">
+		<img src="@routes.Assets.versioned("images/method-draw-image-1.svg")" alt="Kiwi standing on oval" style="width: 180px;">
+	</a>
+	<input class="navbar-menu-target" type="checkbox" id="example-nav">
+	<label class="navbar-menu-toggle" for="example-nav"><span class="navbar-icon"></span></label>
+	<ul class="navbar-menu-items" >
+		<li>
+				<a href="/"><span style="color: black;">Sign In</span></a>
+		</li>
+		<li>
+				<a href="/About"><span style="color: black;">About</span></a>
+		</li>
+	</ul>
+</nav>
+
+
+<div class="container" style="height: 100%;">
+	<div class="card center" >
+		<div class="card-header">
+				<div class="card-header-title">
+						Sign Up
+				</div>
+				<div class="card-header-icon">
+					👍
+				</div>
+		</div>
+		@helper.form(action = routes.HomeController.registerPost) {
+		@helper.CSRF.formField
+			<div class="card-content">
+				<div class="" id="page1">
+					<fieldset class="fieldset-custom">
+						<legend><div style="margin-left: 5px; margin-right: 5px;">Real Name</div></legend>
+
+						@helper.inputText(registerForm("name")
+							, Symbol("_label") -> null
+							, Symbol("_showConstraints") -> false
+							, Symbol("class") -> "input form-input hover-grow"
+							, Symbol("placeholder") -> "Shrek"
+						)
+
+					</fieldset>
+					<fieldset class="fieldset-custom">
+						<legend><div style="margin-left: 5px; margin-right: 5px;">School Email</div></legend>
+
+						@helper.inputText(registerForm("email")
+							, Symbol("_label") -> null
+							, Symbol("_showConstraints") -> false
+							, Symbol("class") -> "input form-input hover-grow"
+							, Symbol("placeholder") -> "example@email.com"
+						)
+
+					</fieldset>
+					<fieldset class="fieldset-custom">
+						<legend><div style="margin-left: 5px; margin-right: 5px;">Password</div></legend>
+
+						@helper.inputText(registerForm("password")
+							, Symbol("_label") -> null
+							, Symbol("_showConstraints") -> false
+							, Symbol("type") -> "password"
+							, Symbol("class") -> "input form-input hover-grow"
+							, Symbol("placeholder") -> "FeminismRocks123"
+						)
+
+					</fieldset>
+				</div>
+
+				<div class="" id="page2" style="display: none;">
+					<fieldset class="fieldset-custom">
+						<legend><div style="margin-left: 5px; margin-right: 5px;">Grade</div></legend>
+						<span class="select-icon" style="margin-top: 10px;">
+
+							@helper.select(
+								field = registerForm("grade")
+								, options = Seq(
+											"9" -> "9th Grade"
+										, "10" -> "10th Grade"
+										, "11" -> "11th Grade"
+										, "12" -> "12th Grade"
+										, "Null" -> "None (faculty)"
+								 )
+								, Symbol("_label") -> null
+								, Symbol("_default") -> "Choose One"
+								, Symbol("_showConstraints") -> false
+								, Symbol("style") -> "transform: translateY(10px);"
+								, Symbol("class") -> "hover-grow"
+							)
+
+						</span>
+					</fieldset>
+					<fieldset class="fieldset-custom">
+						<legend><div style="margin-left: 5px; margin-right: 5px;">Relationship Status</div></legend>
+						<span class="select-icon" style="margin-top: 10px;">
+
+							@helper.select(
+								field = registerForm("relStatus")
+								, options = Seq(
+											"Single" -> "Single"
+										, "Dating" -> "Dating"
+										, "Married" -> "Married"
+										, "It's complicated" -> "It's complicated"
+										, "Two at once baby" -> "Two at once baby"
+										, "Single and proud" -> "Single and proud"
+										, "Foot fetish for life" -> "Foot fetish for life"
+										, "I'm asexual and aromantic... so..." -> "I'm asexual and aromantic... so..."
+										, "I wish this did not exist" -> "I wish this did not exist"
+										, "I'm lonely. Please help!" -> "I'm lonely. Please help!"
+										, "I'm so sorry. I still love you... if you still love me." -> "I'm so sorry. I still love you... if you still love me."
+										, "Other" -> "Other"
+										, "I'd rather not say." -> "I'd rather not say."
+									)
+								, Symbol("_label") -> null
+								, Symbol("_default") -> "Choose One"
+								, Symbol("_showConstraints") -> false
+								, Symbol("style") -> "transform: translateY(10px);"
+								, Symbol("class") -> "hover-grow"
+							)
+
+						</span>
+					</fieldset>
+					<fieldset class="fieldset-custom">
+						<legend><div style="margin-left: 5px; margin-right: 5px;">Gender</div></legend>
+
+						@helper.inputText(registerForm("gender")
+							, Symbol("_label") -> null
+							, Symbol("_showConstraints") -> false
+							, Symbol("class") -> "input form-input hover-grow"
+							, Symbol("placeholder") -> "Example: Soy Boy"
+						)
+
+					</fieldset>
+				</div>
+
+				<div class="" id="page3" style="display:none">
+					<fieldset class="fieldset-custom">
+						<legend><div style="margin-left: 5px; margin-right: 5px;">Show Gender</div></legend>
+						<span class="select-icon" style="margin-top: 10px;">
+
+							@helper.checkbox(registerForm("showGender")
+								, Symbol("_label") -> null
+								, Symbol("_showConstraints") -> false
+								, Symbol("class") -> "hover-grow"
+							)
+
+						</span>
+						<label for="example-switch-1" class="switch-label">
+							You can put your gender in the system and display it when you're ready. 😊
+						</label>
+
+					</fieldset>
+					<fieldset class="fieldset-custom">
+						<legend><div style="margin-left: 5px; margin-right: 5px;">Your biological sex</div></legend>
+						<span class="select-icon" style="margin-top: 10px;">
+
+							@helper.select(
+								field = registerForm("biologicalSex")
+								, options = Seq(
+											"X" -> "X"
+										, "XX" -> "XX"
+										, "XXY" -> "XXY"
+										, "XY" -> "XY"
+										, "XYY" -> "XYY"
+										, "XXXY" -> "XXXY"
+										, "Other" -> "Other"
+								 )
+								, Symbol("_label") -> null
+								, Symbol("_default") -> "Choose One"
+								, Symbol("_showConstraints") -> false
+								, Symbol("style") -> "transform: translateY(10px);"
+								, Symbol("class") -> "hover-grow"
+							)
+
+						</span>
+					</fieldset>
+					<fieldset class="fieldset-custom">
+						<legend><div style="margin-left: 5px; margin-right: 5px;">Show Biological Sex</div></legend>
+						<span class="select-icon" style="margin-top: 10px;">
+							@helper.checkbox(registerForm("showBiologicalSex")
+								, Symbol("_label") -> null
+								, Symbol("_showConstraints") -> false
+								, Symbol("class") -> "hover-grow"
+							)
+							<label for="example-switch-1" class="switch-label">
+								You can put your sex in the system and display it when you're ready. 😊
+							</label>
+						</span>
+
+					</fieldset>
+				</div>
+
+
+
+
+
+
+				<div class="" id="page4" style="display:none">
+					<fieldset class="fieldset-custom">
+						<legend><div style="margin-left: 5px; margin-right: 5px;">Biography</div></legend>
+
+						@helper.textarea(registerForm("biography")
+							, Symbol("_label") -> null
+							, Symbol("_showConstraints") -> false
+							, Symbol("style") -> "height: 50px;"
+							, Symbol("class") -> "input form-input hover-grow"
+						)
+
+					</fieldset>
+					<fieldset class="fieldset-custom">
+						<legend><div style="margin-left: 5px; margin-right: 5px;">Date of birth</div></legend>
+
+						@helper.inputDate(registerForm("dateOfBirth")
+							, Symbol("_label") -> null
+							, Symbol("_height") -> null
+							, Symbol("_showConstraints") -> false
+							, Symbol("class") -> "hover-grow"
+						)
+
+						</fieldset>
+						<fieldset class="fieldset-custom">
+							<legend><div style="margin-left: 5px; margin-right: 5px;">Show Birthdate</div></legend>
+							<span class="select-icon" style="margin-top: 10px;">
+
+								@helper.checkbox(registerForm("showDOB")
+									, Symbol("_label") -> null
+									, Symbol("_showConstraints") -> false
+									, Symbol("class") -> "hover-grow"
+								)
+
+							</span>
+						</fieldset><br>
+
+						<div style="margin-left: 40px;">
+							By signing up it is assumed you agree to both the privacy policy and terms of service found <a href="assets/images/PrivacyPolicy.pdf">here</a> and <a href="assets/images/Termsofservice.pdf">here</a>.
+						</div>
+					</div>
+
+				<br><br>
+			</div>
+			<div class="card-footer">
+					<div class="card-footer-item" id="ButtonBack1">
+						<button class="yellow rounded" onclick="return showSignUp('page1', 'ButtonBack1-2', 'Button1-2', 'page2', 'ButtonBack2', 'Button2', 'ButtonBack1', 'Button1');">  Back </button>
+					</div>
+					<div class="card-footer-item" id="ButtonBack1-2" style="display:none">
+						<button class="yellow rounded" style="margin-left: 35%;" onclick="return showSignUp('page1', 'ButtonBack1-2', 'Button1-2', 'page2', 'ButtonBack2', 'Button2', 'ButtonBack1', 'Button1');">  Back </button>
+					</div>
+					<div class="card-footer-item" id="ButtonBack2" style="display:none">
+						<button class="yellow rounded" style="margin-left: 35%;" onclick="return showSignUp('page1', 'ButtonBack1-2', 'Button1-2', 'page2', 'ButtonBack2', 'Button2', 'ButtonBack1', 'Button1');">  Back </button>
+					</div>
+					<div class="card-footer-item" id="ButtonBack3" style="display:none">
+						<button class="yellow rounded" style="margin-left: 35%;" onclick="return showSignUp('page2', 'ButtonBack2', 'Button2', 'page3', 'ButtonBack3', 'Button3', 'ButtonBack1', 'Button1');"> Back </button>
+					</div>
+					<div class="card-footer-item" id="ButtonBack4" style="display:none">
+						<button class="yellow rounded" style="margin-left: 35%;" onclick="return showSignUp('page3', 'ButtonBack3', 'Button3', 'page4', 'ButtonBack4', 'Button4', 'ButtonBack1', 'Button1');"> Back </button>
+					</div>
+
+
+
+					<div class="card-footer-item" id="Button1">
+							<button class="yellow rounded" onclick="return showSignUp('page2', 'ButtonBack2', 'Button2', 'page1', 'ButtonBack1-2', 'Button1-2', 'ButtonBack1', 'Button1');"> Next </button>
+					</div>
+					<div class="card-footer-item" id="Button1-2" style="display:none">
+							<button class="yellow rounded" style="margin-left: 40%;" onclick="return showSignUp('page2', 'ButtonBack2', 'Button2', 'page1', 'ButtonBack1-2', 'Button1-2', 'ButtonBack1', 'Button1');"> Next </button>
+					</div>
+					<div class="card-footer-item" id="Button2" style="display:none">
+							<button class="yellow rounded" style="margin-left: 40%;" onclick="return showSignUp('page3', 'ButtonBack3', 'Button3', 'page2', 'ButtonBack2', 'Button2', 'ButtonBack1', 'Button1');"> Next </button>
+					</div>
+					<div class="card-footer-item" id="Button3" style="display:none">
+							<button class="yellow rounded" style="margin-left: 40%;" onclick="return showSignUp('page4', 'ButtonBack4', 'Button4', 'page3', 'ButtonBack3', 'Button3', 'ButtonBack1', 'Button1');"> Next </button>
+					</div>
+					<div class="card-footer-item" id="Button4" style="display:none;">
+							<button class="yellow rounded" type="submit" style="margin-left: 40%;"> Submit </button>
+					</div>
+				</div>
+			}
+
+		</div>
+	</div>
+
+	<script type="application/javascript" src="@routes.Assets.versioned("javascripts/signUp.js")"></script>
+
+
+}

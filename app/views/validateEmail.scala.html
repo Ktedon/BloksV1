@@ -1,0 +1,30 @@
+@(key: String, form: Form[LoginForm])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+
+@main("Welcome to Bloks") {
+
+  <div class="card" style="width: 70%; margin-left: 15%; margin-top: 200px;">
+      <div class="card-header">
+          <div class="card-header-title">
+              Validate Your Account
+          </div>
+          <div class="card-header-icon">
+              ▼
+          </div>
+      </div>
+      <div class="card-content">
+        <form class="form-control" action="/emailValidateUserPost/@key" method="POST">
+          @helper.CSRF.formField
+
+          <label>Email:</label>
+          <input type="email" name="email" placeholder="Email Here!"><br><br>
+
+          <label>Password:</label>
+          <input type="password" name="password" placeholder="Password Here!"><br><br>
+
+          <button type="submit" class="indigo inverted medium">Validate</button>
+        </form>
+      </div>
+  </div>
+
+
+}

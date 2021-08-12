@@ -1,0 +1,192 @@
+@(name: String, userId: Int)(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+
+@main("Welcome to Bloks") {
+
+<nav class="navbar white navbar-color" style="box-shadow: 0px 5px 5px black; position: fixed;">
+    <a href="/home/@name" class="navbar-brand" style="color: black;">
+      <img src="@routes.Assets.versioned("images/method-draw-image-1.svg")" alt="Kiwi standing on oval" style="width: 180px;">
+    </a>
+    <input class="navbar-menu-target" type="checkbox" id="example-nav">
+    <label class="navbar-menu-toggle" for="example-nav"><span class="navbar-icon"></span></label>
+    <ul class="navbar-menu-items" >
+        <li>
+            <a href="/home/@name"><span style="color: black;">Home</span></a>
+        </li>
+        <li>
+            <a href="/home/@userId/portfolio"><span style="color: black;">Portfolio</span></a>
+        </li>
+        <li>
+            <a href="/home/@name/groups"><span style="color: black;">Groups</span></a>
+        </li>
+        <li>
+            <a href="/home/@name/settings"><span style="color: black;">Settings</span></a>
+        </li>
+        <li>
+            <a href="/home/@name/donate"><span style="color: black;">Donate</span></a>
+        </li>
+    </ul>
+</nav>
+
+
+
+<div class="card" style="width: 60%; margin-left: 20%; transform: translateY(200px);">
+    <div class="card-header">
+        <div class="card-header-title">
+            Settings
+        </div>
+        <div class="card-header-icon">
+            ▼
+        </div>
+    </div>
+    <div class="card-content" style="overflow: scroll; height: 500px;">
+        <div class="collapsible styled">
+            <input type="checkbox" class="collapsible-toggle" id="1 styled" name="collapsible-checkbox" />
+            <label class="collapsible-header" for="1 styled">
+                Profile Icon
+            </label>
+            <div class="collapsible-body">
+                <h2>Change Profile Icon:</h2>
+                <img src="https://avatars.dicebear.com/api/avataaars/cunnilingusIsSexy.svg" alt="k" class="icon column" style="border-width: 4px; height: 10vw; width: 10vw;" id="img" align="center"><br><br>
+
+
+                <form class="form-control" action="/home/changeIcon" method="POST">
+                  @helper.CSRF.formField
+                    <div>
+                        <label class="select-label" for="questions"> Type: </label>
+                        <span class="select-icon">
+                            <select name="type" id="type">
+                                <option value="avataaars"> Avataaars </option>
+                                <option value="human"> Human </option>
+                                <option value="bottts"> Bottts </option>
+                                <option value="jdenticon"> jdenticon </option>
+                                <option value="gridy"> gridy </option>
+                            </select>
+                        </span>
+                    </div><br>
+
+                    <label class="input-label" for="example-default"> Seed: </label>
+                    <input class="green" type="text" name="seed" id="seed" maxlength="512" value="" placeholder="You should run for student council."><br><br>
+
+                    <button class="inverted indigo" id="update" onclick="changeImage()" type="button">Update Preview</button>
+                    <button class="inverted indigo" id="update" onclick="randomImage()" type="button">Generate Random</button>
+                    <button class="inverted indigo" type="submit">Change</button>
+                </form>
+
+            </div>
+        </div>
+
+        <div class="collapsible styled">
+            <input type="checkbox" class="collapsible-toggle" id="2 styled" name="collapsible-checkbox" />
+            <label class="collapsible-header" for="2 styled">
+                Account Settings
+            </label>
+            <div class="collapsible-body">
+                <h2>Change Password:</h2>
+                <form class="form-control" action="/home/deleteAccount" method="POST">
+                  @helper.CSRF.formField
+                    <label class="input-label" for="example-default"> New Password: </label>
+                    <input class="green" type="text" name="seed" id="newpwd" maxlength="99" value="" placeholder="BlowjobsAreCannabilism123!"><br><br>
+
+                    <button class="inverted indigo" type="submit">Change</button>
+                </form><br>
+
+                <h2>Delete Account:</h2>
+                <h6>Wait... I love you.... It does not have to be like this.</h6>
+                <p>I know. My words can be blunt. I just want what's best for you. If I'm really making your life worse... I understand. Just don't forget about me. 🙂</p>
+                <form class="form-control" action="index.html" method="POST">
+                  <button type="submit" class="red">Delete Account</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="collapsible styled">
+            <input type="checkbox" class="collapsible-toggle" id="3 styled" name="collapsible-checkbox" />
+            <label class="collapsible-header" for="3 styled">
+                Change Gender
+            </label>
+            <div class="collapsible-body">
+                <h2>Change Gender:</h2>
+                <form class="form-control" action="#" method="post">
+
+                    <button class="inverted indigo" type="submit">Update</button>
+                </form><br>
+
+                <h2>Change Gender Visibility:</h2>
+                <form class="form-control" action="#" method="post">
+
+                    <button class="inverted indigo" type="submit">Update</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="collapsible styled">
+            <input type="checkbox" class="collapsible-toggle" id="4 styled" name="collapsible-checkbox" />
+            <label class="collapsible-header" for="4 styled">
+                Change Sex
+            </label>
+            <div class="collapsible-body">
+              <h2>Change Sex:</h2>
+              <form class="form-control" action="#" method="post">
+
+                  <button class="inverted indigo" type="submit">Update</button>
+              </form><br>
+
+              <h2>Change Sex Visibility:</h2>
+              <form class="form-control" action="#" method="post">
+
+                  <button class="inverted indigo" type="submit">Update</button>
+              </form>
+
+            </div>
+        </div>
+
+        <div class="collapsible styled">
+            <input type="checkbox" class="collapsible-toggle" id="5 styled" name="collapsible-checkbox" />
+            <label class="collapsible-header" for="5 styled">
+                Change Grade
+            </label>
+            <div class="collapsible-body">
+              <h2>Change Sex:</h2>
+              <form class="form-control" action="#" method="post">
+
+                  <button class="inverted indigo" type="submit">Update</button>
+              </form>
+
+            </div>
+        </div>
+
+        <div class="collapsible styled">
+            <input type="checkbox" class="collapsible-toggle" id="6 styled" name="collapsible-checkbox" />
+            <label class="collapsible-header" for="6 styled">
+                Change Relationship Status
+            </label>
+            <div class="collapsible-body">
+              <h2>Change Sex:</h2>
+              <form class="form-control" action="#" method="post">
+
+                  <button class="inverted indigo" type="submit">Update</button>
+              </form>
+
+            </div>
+        </div>
+
+        <div class="collapsible styled">
+            <input type="checkbox" class="collapsible-toggle" id="7 styled" name="collapsible-checkbox" />
+            <label class="collapsible-header" for="7 styled">
+                Change Biography
+            </label>
+            <div class="collapsible-body">
+              <h2>Change Sex:</h2>
+              <form class="form-control" action="#" method="post">
+
+                  <button class="inverted indigo" type="submit">Update</button>
+              </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@routes.Assets.versioned("javascripts/settings.js")" type="text/javascript"></script>
+
+}

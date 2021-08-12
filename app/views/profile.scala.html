@@ -1,0 +1,167 @@
+@(name: String)(implicit request: RequestHeader, user: models.PublicUser, numFriended: Int, numFriends: Int)
+
+@main("Welcome to Bloks") {
+
+  <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/home.css")">
+
+  <nav class="navbar white navbar-color" style="box-shadow: 0px 5px 5px black; position: fixed;">
+    <a href="/home/@user.name" class="navbar-brand" style="color: black;">
+      <img src="@routes.Assets.versioned("images/method-draw-image-1.svg")" alt="Kiwi standing on oval" style="width: 180px;">
+    </a>
+    <input class="navbar-menu-target" type="checkbox" id="example-nav">
+    <label class="navbar-menu-toggle" for="example-nav"><span class="navbar-icon"></span></label>
+    <ul class="navbar-menu-items" >
+        <li>
+            <a href="/home/@name"><span style="color: black;">Home</span></a>
+        </li>
+        <li>
+            <a href="/home/@name/portfolio"><span style="color: black;">Portfolio</span></a>
+        </li>
+        <li>
+            <a href="/home/@name/groups"><span style="color: black;">Groups</span></a>
+        </li>
+        <li>
+            <a href="/home/@name/settings"><span style="color: black;">Settings</span></a>
+        </li>
+        <li>
+            <a href="/home/@name/donate"><span style="color: black;">Donate</span></a>
+        </li>
+    </ul>
+</nav>
+
+<div class="footer" style="padding-bottom:10px;">
+  <div style="background-color: #efefef; margin-top: 100px;" class="footer">
+  <div class="cardCustom" style="width: 70%; margin-top: 140px; margin-left: 15%;">
+    <div class="card-header">
+      <div style=" transform: translateY(-100px);">
+        <div class="card-header-title">
+
+
+          <div class="row gapless">
+            <div class="col xs-4 sm-4 lg-4 xl-4">
+                <div class="section" style="margin-top: 100px; float: right; margin-right: 10%;">
+                    <h5 class="container">
+                        RelStatus: @user.relationshipStatus
+                    </h5>
+                    <br>
+                    <h5 class="container">
+                        Gender: @user.gender
+                    </h5>
+                    <br>
+                    <h5 class="container">
+                        Sex: @user.biologicalSex
+                    </h5>
+                </div>
+            </div>
+            <div class="col xs-4 sm-4 lg-4 xl-4">
+                 <img src="@user.profilePic" alt="k" class="icon column" style="border-width: 4px; height: 23.333vw; width: 23.333vw;" align="center">
+            </div>
+            <div class="col xs-4 sm-4 lg-4 xl-4">
+              <div>
+
+
+                <div class="section" style="margin-top: 100px; float: left; margin-left: 10%;">
+                    <h5 class="container">
+                        Grade: @user.grade
+                    </h5>
+                    <br>
+                    <h5 class="container">
+                        Friends: @numFriends
+                    </h5>
+                    <br>
+                    <h5 class="container">
+                        Friended: @numFriended
+                    </h5>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+          <h2 align="center">@name</h2><br><br>
+
+          @{
+            user.electedRank match {
+              case 0 =>  <h4 style="transform: translateY(-50px);">Rank: Citizen</h4>
+              case 1 =>  <h4 style="transform: translateY(-50px);">Rank: Associate</h4>
+              case 2 =>  <h4 style="transform: translateY(-50px);">Rank: Informant</h4>
+              case 3 =>  <h4 style="transform: translateY(-50px);">Rank: Enforcer</h4>
+              case 4 =>  <h4 style="transform: translateY(-50px);">Rank: Captain</h4>
+              case 5 =>  <h4 style="transform: translateY(-50px);">Rank: Executive</h4>
+              case 6 =>  <h4 style="transform: translateY(-50px);">Rank: Liege</h4>
+              case 7 =>  <h4 style="transform: translateY(-50px);">Rank: BlokLord</h4>
+              case 8 =>  <h4 style="transform: translateY(-50px);">Rank: Senator of Blok Parliament</h4>
+              case 9 =>  <h4 style="transform: translateY(-50px);">Rank: General Secretary of the Blok Union</h4>
+              case 10 => <h4 style="transform: translateY(-50px);">Rank: Prime Kaiser of the Blok Empire</h4>
+              case 11 => <h4 style="transform: translateY(-50px);">Rank: Partriarch of BlokTopia</h4>
+              case 12 => <h4 style="transform: translateY(-50px);">Rank: High Court Prime Representative</h4>
+              case 13 => <h4 style="transform: translateY(-50px);">Rank: Privy Councillor and Speaker of the High Court</h4>
+              case 14 => <h4 style="transform: translateY(-50px);">Rank: Lord Admiral of the High Court</h4>
+              case 15 => <h4 style="transform: translateY(-50px);">Rank: House Speaker of Blok Parliament</h4>
+            }
+          }
+
+
+
+              <div style="margin-left: 10%; width: 80%; background-color: azure; border-radius: 20px; padding: 20px; text-align: left; font-size: 20px;">
+                @user.biography
+              </div><br><br>
+
+          <div class="row infoBar">
+
+                  <div class="col xs-4 sm-4 md-4 lg-4 xl-4" align="center">
+                    <button class="green inverted hover-grow large"> Friend </button>
+                  </div>
+                  <div class="col xs-4 sm-4 md-4 lg-4 xl-4" align="center">
+                    <a href="/home/poke/@user.id"><button class="blue inverted hover-grow large"> Poke </button></a>
+                  </div>
+                  <div class="col xs-4 sm-4 md-4 lg-4 xl-4" align="center">
+                    <a href="/home/@name/message/@user.id"><button class="yellow inverted hover-grow large"> Message </button></a>
+                  </div>
+              </div>
+
+          </div>
+        </div>
+      </div>
+
+  </div>
+
+
+</div>
+</div>
+<div class="footer" style="background-color: lightgray; width: 100%;">
+    <div class="row">
+      <div class="col xs-12 sm-12 md-6 lg-4 xl-4">
+          <div style="width: 80%; margin-left: 10%; height: 160px;">
+            <h5>HELP:</h5>
+            <a href="#" style="text-decoration: none;">FAQ</a><br>
+            <a href="#" style="text-decoration: none;">Constitution</a><br>
+            <a href="#" style="text-decoration: none;">Settings</a><br>
+            <a href="#" style="text-decoration: none;">Logout</a>
+          </div>
+        </div>
+        <div class="col xs-12 sm-12 md-6 lg-4 xl-4">
+          <div style="width: 80%; margin-left: 10%; height: 160px;">
+            <h5>ABOUT US:</h5>
+            <a href="#" style="text-decoration: none;">Contact</a><br>
+            <a href="#" style="text-decoration: none;">About</a><br>
+            <a href="#" style="text-decoration: none;">eXul Organization</a><br>
+            <a href="#" style="text-decoration: none;">FAQ About Us</a>
+          </div>
+        </div>
+        <div class="col xs-12 sm-12 md-6 lg-4 xl-4">
+          <div style="width: 80%; margin-left: 10%; height: 160px;">
+            <h5>NAVIGATE:</h5>
+            <a href="#" style="text-decoration: none;">Home</a><br>
+            <a href="#" style="text-decoration: none;">Portfolio</a><br>
+            <a href="#" style="text-decoration: none;">Settings</a><br>
+            <a href="#" style="text-decoration: none;">Donate</a>
+          </div>
+        </div>
+    </div>
+  </div>
+
+
+
+
+}

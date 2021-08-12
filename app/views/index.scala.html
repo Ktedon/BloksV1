@@ -1,0 +1,77 @@
+@(registerForm: Form[LoginForm])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+
+@main("Welcome to Bloks") {
+
+<nav class="navbar white navbar-color" style="box-shadow: 0px 5px 5px black;">
+    <a href="/" class="navbar-brand" style="color: black;">
+      <img src="@routes.Assets.versioned("images/method-draw-image-1.svg")" alt="Kiwi standing on oval" style="width: 180px;">
+    </a>
+    <input class="navbar-menu-target" type="checkbox" id="example-nav">
+    <label class="navbar-menu-toggle" for="example-nav"><span class="navbar-icon"></span></label>
+    <ul class="navbar-menu-items" >
+        <li>
+            <a href="/register"><span style="color: black;">Register</span></a>
+        </li>
+        <li>
+            <a href="/about"><span style="color: black;">About</span></a>
+        </li>
+        <li>
+            <a href="/donate"><span style="color: black;">Donate</span></a>
+        </li>
+    </ul>
+</nav>
+
+<div style="width: 100%;overflow:auto;" class="wrap">
+  <div class="card fleft" style="margin-top: 10%;">
+      <div class="card-header">
+          <div class="card-header-title">
+              Sign in
+          </div>
+          <div class="card-header-icon">
+              ▼
+          </div>
+      </div>
+      <div class="card-content">
+        @helper.form(action = routes.HomeController.indexPost) {
+          @helper.CSRF.formField
+          <fieldset class="fieldset-custom">
+            <legend><div style="margin-left: 5px;">School Email:</div></legend>
+            @helper.inputText(registerForm("email")
+              , Symbol("_label") -> null
+              , Symbol("_showConstraints") -> false
+              , Symbol("class") -> "input form-input hover-grow"
+              , Symbol("placeholder") -> "example@email.com"
+            )
+          </fieldset>
+
+          <fieldset class="fieldset-custom">
+            <legend><div style="margin-left: 5px;">Password:</div></legend>
+            @helper.inputText(registerForm("password")
+              , Symbol("_label") -> null
+              , Symbol("_showConstraints") -> false
+              , Symbol("type") -> "password"
+              , Symbol("class") -> "input form-input hover-grow"
+              , Symbol("placeholder") -> "FeminismRocks123"
+            )
+          </fieldset>
+          <br>
+          <div style="margin-left: 5%;">
+            Forgot Password? Click <a href="/darnit-I-forgot-my-passcode">here</a>.
+          </div>
+          <br>
+          <button class="yellow rounded" value="Sign In" type="submit" style="margin-left: 5%;"> Sign In </button>
+
+
+        }
+      </div>
+  </div>
+  <div class="fright">
+    <h1 class="frontTitle" style="text-align: center;  margin-left: 10%;">eXul Bloks</h1>
+    <h4 style="text-align: center; margin-left: 10%; font-size: 1.7vw">On Principle, Not Fear Nor Exception</h4>
+    <br>
+    <div class="text-divider" style="margin-left: 10%;"><h5>How it Works</h5></div><br>
+    <p style="margin-left: 10%; font-size: 2vw;" align="center">eXul Bloks is a <b>social networking</b> site for schools across Vermont. For each <b>school district</b> the students can create their own Blok and manage the site themselves <b>democratically</b>.</p>
+  </div>
+</div>
+
+}

@@ -1,0 +1,152 @@
+@(username: String, homeUserId: Int, form: Form[controllers.HomeSearchForm])(implicit request: RequestHeader, messagesProvider: MessagesProvider, searchResults: Tuple2[Seq[models.Tables.BlokGroupRow], Seq[models.PublicUser]])
+
+
+@main("Welcome to Bloks") {
+
+<nav class="navbar white navbar-color" style="box-shadow: 0px 5px 5px black; position: fixed;">
+    <a href="/home/@username" class="navbar-brand" style="color: black;">
+      <img src="@routes.Assets.versioned("images/method-draw-image-1.svg")" alt="Kiwi standing on oval" style="width: 180px;">
+    </a>
+    <input class="navbar-menu-target" type="checkbox" id="example-nav">
+    <label class="navbar-menu-toggle" for="example-nav"><span class="navbar-icon"></span></label>
+    <ul class="navbar-menu-items" >
+        <li>
+            <a href="/home/@username"><span style="color: black;">Home</span></a>
+        </li>
+        <li>
+            <a href="/home/@homeUserId/portfolio"><span style="color: black;">Portfolio</span></a>
+        </li>
+        <li>
+            <a href="/home/@username/groups"><span style="color: black;">Groups</span></a>
+        </li>
+        <li>
+            <a href="/home/@username/settings"><span style="color: black;">Settings</span></a>
+        </li>
+        <li>
+            <a href="/home/@username/donate"><span style="color: black;">Donate</span></a>
+        </li>
+    </ul>
+</nav>
+
+<div style="height: 350px; transform: translateY(45px);">
+   <div align="center">
+      <div class="container">
+         @helper.form(action = routes.HomeController.homeSearchPost(username), Symbol("class") -> "form") {
+            @helper.CSRF.formField
+            <div class="finder">
+               <div class="finder__outer">
+                  <div class="finder__inner">
+                     <div class="finder__icon" ref="icon"></div>
+
+                        @helper.inputText(form("query")
+                          , Symbol("_label") -> null
+                          , Symbol("_showConstraints") -> false
+                          , Symbol("class") -> "finder__input"
+                          , Symbol("placeholder") -> "Group/User Search"
+                          , Symbol("style") -> "margin-top: 10px;"
+                        )
+
+
+
+                  </div>
+               </div>
+            </div>
+         }
+      </div>
+   </div>
+</div>
+<div class="footer" style="padding-bottom:150px;">
+  <div class="card" style="margin-top: 50px; width: 60%; margin-left: 20%;">
+    <div class="card-header">
+        <div class="card-header-title">
+            Results
+        </div>
+        <div class="card-header-icon">
+            ▼
+        </div>
+    </div>
+    <div class="card-content">
+
+      <div>
+        @searchResults._2.map { person =>
+
+          <div class="message indigo">
+              <div class="message-header">
+                  <p>@person.name</p>
+              </div>
+              <div class="message-body">
+                  <div class="row">
+                      <div class="col xs-2 sm-2 md-1 lg-1 xl-1">
+                          <a href="/home/@person.id/portfolio"><img src="@person.profilePic" alt="profile" class="icon column" style="border-width: 2px; height: 45px; width: 45px;" align="center"></a>
+                      </div>
+                      <div class="col xs-4 sm-4 md-3 lg-3 xl-3">
+                          @{
+                            person.electedRank match {
+                              case 0 =>  <div>Rank: Citizen</div>
+                              case 1 =>  <div>Rank: Associate</div>
+                              case 2 =>  <div>Rank: Informant</div>
+                              case 3 =>  <div>Rank: Enforcer</div>
+                              case 4 =>  <div>Rank: Captain</div>
+                              case 5 =>  <div>Rank: Executive</div>
+                              case 6 =>  <div>Rank: Liege</div>
+                              case 7 =>  <div>Rank: BlokLord</div>
+                              case 8 =>  <div>Rank: Senator of Blok Parliament</div>
+                              case 9 =>  <div>Rank: General Secretary of the Blok Union</div>
+                              case 10 => <div>Rank: Prime Kaiser of the Blok Empire</div>
+                              case 11 => <div>Rank: Partriarch of BlokTopia</div>
+                              case 12 => <div>Rank: High Court Prime Representative</div>
+                              case 13 => <div>Rank: Privy Councillor and Speaker of the High Court</div>
+                              case 14 => <div>Rank: Lord Admiral of the High Court</div>
+                              case 15 => <div>Rank: House Speaker of Blok Parliament</div>
+                            }
+                          }
+                      </div>
+                      <div class="col xs-3 sm-3 md-4 lg-4 xl-4">
+                          <div>grade: @person.grade</div>
+                      </div>
+                      <div class="col xs-3 sm-3 md-4 lg-4 xl-4">
+                          <a href="/home/@username/message/@person.id"><button type="button">Message</button></a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        }
+      </div>
+
+
+  </div>
+</div>
+</div>
+<div class="footer" style="background-color: lightgray; width: 100%;">
+    <div class="row">
+      <div class="col xs-12 sm-12 md-6 lg-4 xl-4">
+          <div style="width: 80%; margin-left: 10%; height: 160px;">
+            <h5>HELP:</h5>
+            <a href="#" style="text-decoration: none;">FAQ</a><br>
+            <a href="#" style="text-decoration: none;">Constitution</a><br>
+            <a href="#" style="text-decoration: none;">Settings</a><br>
+            <a href="#" style="text-decoration: none;">Logout</a>
+          </div>
+        </div>
+        <div class="col xs-12 sm-12 md-6 lg-4 xl-4">
+          <div style="width: 80%; margin-left: 10%; height: 160px;">
+            <h5>ABOUT US:</h5>
+            <a href="#" style="text-decoration: none;">Contact</a><br>
+            <a href="#" style="text-decoration: none;">About</a><br>
+            <a href="#" style="text-decoration: none;">eXul Organization</a><br>
+            <a href="#" style="text-decoration: none;">FAQ About Us</a>
+          </div>
+        </div>
+        <div class="col xs-12 sm-12 md-6 lg-4 xl-4">
+          <div style="width: 80%; margin-left: 10%; height: 160px;">
+            <h5>NAVIGATE:</h5>
+            <a href="#" style="text-decoration: none;">Home</a><br>
+            <a href="#" style="text-decoration: none;">Portfolio</a><br>
+            <a href="#" style="text-decoration: none;">Settings</a><br>
+            <a href="#" style="text-decoration: none;">Donate</a>
+          </div>
+        </div>
+    </div>
+  </div>
+
+}

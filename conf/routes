@@ -1,0 +1,56 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# https://www.playframework.com/documentation/latest/ScalaRouting
+# ~~~~
+
+
+GET     /home/:name                 controllers.HomeController.home(name: String)
+
+GET     /                           controllers.HomeController.index()
+POST    /                           controllers.HomeController.indexPost()
+
+GET     /home/:yourName/message/:toID controllers.HomeController.message(yourName: String, toID: Int)
+
+POST    /home/addMessage controllers.HomeController.createMessagePost
+
+GET     /home/:name/groups          controllers.HomeController.groups(name: String)
+POST    /home/:name/createGroup     controllers.HomeController.groupPost(name: String)
+
+GET     /home/:name/group/:group    controllers.HomeController.group(name: String, group: String)
+POST    /home/:name/group/:group    controllers.HomeController.createThreadPost(name: String, group: String, extendsID: Int)
+
+POST    /home/:name/homeSearchPost  controllers.HomeController.homeSearchPost(name: String)
+POST    /home/:name/groupSearchPost controllers.HomeController.groupSearchPost(name: String)
+
+GET     /register                   controllers.HomeController.register()
+POST    /registerPost               controllers.HomeController.registerPost()
+
+GET     /home/:userId/portfolio         controllers.HomeController.portfolio(userId: Int)
+GET     /home/poke/:pokeId      controllers.HomeController.poke(pokeId: Int)
+# GET     /home/:name/friend:friendId   controllers.HomeController.portfolio(name: String, pokeId: Int)
+# GET     /home/:name/unfriend:friendId controllers.HomeController.portfolio(name: String, pokeId: Int)
+
+GET     /about                      controllers.HomeController.about()
+
+GET     /donate                     controllers.HomeController.index()
+
+GET     /home/:name/settings         controllers.HomeController.settings(name: String)
+POST    /home/changeIcon             controllers.HomeController.changeIconPost()
+POST    /home/deleteAccount          controllers.HomeController.deleteAccountPost
+POST    /home/changeGender           controllers.HomeController.changeGenderPost
+POST    /home/changeGenderVisibility controllers.HomeController.changeGenderVisibilityPost
+
+GET     /emailValidateUser/:key     controllers.HomeController.changeEmailValidation(key: String)
+POST    /emailValidateUserPost/:key controllers.HomeController.changeEmailValidationPost(key: String)
+
+
+GET     /darnit-I-forgot-my-passcode controllers.HomeController.darnitIForgotMyPasscode()
+
+GET     /404                        controllers.HomeController.FourZeroFour()
+
+
+
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

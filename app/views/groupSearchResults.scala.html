@@ -1,0 +1,150 @@
+@(username: String, userId: Int, form: Form[controllers.GroupSearchForm])(implicit request: RequestHeader, messagesProvider: MessagesProvider, searchResults: Tuple2[Seq[models.Tables.BlokGroupRow], Seq[models.PublicUser]])
+
+
+@main("Welcome to Bloks") {
+
+<nav class="navbar white navbar-color" style="box-shadow: 0px 5px 5px black; position: fixed;">
+    <a href="/home/@username" class="navbar-brand" style="color: black;">
+      <img src="@routes.Assets.versioned("images/method-draw-image-1.svg")" alt="Kiwi standing on oval" style="width: 180px;">
+    </a>
+    <input class="navbar-menu-target" type="checkbox" id="example-nav">
+    <label class="navbar-menu-toggle" for="example-nav"><span class="navbar-icon"></span></label>
+    <ul class="navbar-menu-items" >
+        <li>
+            <a href="/home/@username"><span style="color: black;">Home</span></a>
+        </li>
+        <li>
+            <a href="/home/@userId/portfolio"><span style="color: black;">Portfolio</span></a>
+        </li>
+        <li>
+            <a href="/home/@username/groups"><span style="color: black;">Groups</span></a>
+        </li>
+        <li>
+            <a href="/home/@username/settings"><span style="color: black;">Settings</span></a>
+        </li>
+        <li>
+            <a href="/home/@username/donate"><span style="color: black;">Donate</span></a>
+        </li>
+    </ul>
+</nav>
+
+<div style="height: 350px; transform: translateY(45px);">
+   <div align="center">
+      <div class="container">
+         @helper.form(action = routes.HomeController.groupSearchPost(username), Symbol("class") -> "form") {
+            @helper.CSRF.formField
+            <div class="finder">
+               <div class="finder__outer">
+                  <div class="finder__inner">
+                     <div class="finder__icon" ref="icon"></div>
+
+                        @helper.inputText(form("query")
+                          , Symbol("_label") -> null
+                          , Symbol("_showConstraints") -> false
+                          , Symbol("class") -> "finder__input"
+                          , Symbol("placeholder") -> "Group/User Search"
+                          , Symbol("style") -> "margin-top: 10px;"
+                        )
+
+
+
+                  </div>
+               </div>
+            </div>
+         }
+      </div>
+   </div>
+</div>
+<div class="footer" style="padding-bottom:150px;">
+  <div class="card" style="margin-top: 50px; width: 60%; margin-left: 20%;">
+    <div class="card-header">
+        <div class="card-header-title">
+            Results
+        </div>
+        <div class="card-header-icon">
+            ▼
+        </div>
+    </div>
+    <div class="card-content">
+
+      <div>
+
+          @searchResults._1.map { group =>
+        <div class="notification indigo">
+            <div class="row">
+                <div class="col xs-1 sm-1 md-1 lg-1 xl-1">
+                    <img class="icon" src="@group.icon" height="50px" width="50px">
+                </div>
+                <div class="col xs-8 sm-8 md-8 lg-8 xl-8">
+                    <a href="/home/@username/group/@group.name" style="text-align: left; transform: translateY(40px);"><h2>@group.name</h2></a>
+                </div>
+                <div class="col xs-3 sm-3 md-3 lg-3 xl-3">
+                    @{
+                        if((group.`type`) == 0) {"Election discource"}
+                        else if ((group.`type`) == 1) {"Faculty discussion"}
+
+                        else if ((group.`type`) == 2) {"Weird nerd stuff / homework help hotline"}
+                        else if ((group.`type`) == 3) {"Friend clique"}
+                        else if ((group.`type`) == 4) {"Emotional support"}
+                        else if ((group.`type`) == 5) {"School ops"}
+                        else if ((group.`type`) == 6) {"Totally \"sober\" party spots"}
+                        else if ((group.`type`) == 7) {"Cult stuff"}
+
+                        else if ((group.`type`) == 8) {"Site easter eggs"}
+                        else if ((group.`type`) == 9) {"Games"}
+                        else if ((group.`type`) == 10) {"Television/Movies"}
+                        else if ((group.`type`) == 11) {"Memes"}
+                        else if ((group.`type`) == 12) {"Sports"}
+                        else if ((group.`type`) == 13) {"Cars"}
+                        else if ((group.`type`) == 14) {"Philosophy"}
+                        else if ((group.`type`) == 15) {"Teen drama"}
+                        else if ((group.`type`) == 16) {"Soy random"}
+                        else if ((group.`type`) == 17) {"Shitty Classes and Teachers"}
+                        else if ((group.`type`) == 18) {"Equal rights and opportunity"}
+                        else if ((group.`type`) == 19) {"Music"}
+                        else  {"Other"}
+                      }
+                </div>
+            </div>
+        </div>
+      }
+
+      </div>
+
+
+  </div>
+</div>
+</div>
+<div class="footer" style="background-color: lightgray; width: 100%;">
+    <div class="row">
+      <div class="col xs-12 sm-12 md-6 lg-4 xl-4">
+          <div style="width: 80%; margin-left: 10%; height: 160px;">
+            <h5>HELP:</h5>
+            <a href="#" style="text-decoration: none;">FAQ</a><br>
+            <a href="#" style="text-decoration: none;">Constitution</a><br>
+            <a href="#" style="text-decoration: none;">Settings</a><br>
+            <a href="#" style="text-decoration: none;">Logout</a>
+          </div>
+        </div>
+        <div class="col xs-12 sm-12 md-6 lg-4 xl-4">
+          <div style="width: 80%; margin-left: 10%; height: 160px;">
+            <h5>ABOUT US:</h5>
+            <a href="#" style="text-decoration: none;">Contact</a><br>
+            <a href="#" style="text-decoration: none;">About</a><br>
+            <a href="#" style="text-decoration: none;">eXul Organization</a><br>
+            <a href="#" style="text-decoration: none;">FAQ About Us</a>
+          </div>
+        </div>
+        <div class="col xs-12 sm-12 md-6 lg-4 xl-4">
+          <div style="width: 80%; margin-left: 10%; height: 160px;">
+            <h5>NAVIGATE:</h5>
+            <a href="#" style="text-decoration: none;">Home</a><br>
+            <a href="#" style="text-decoration: none;">Portfolio</a><br>
+            <a href="#" style="text-decoration: none;">Settings</a><br>
+            <a href="#" style="text-decoration: none;">Donate</a>
+          </div>
+        </div>
+    </div>
+  </div>
+
+}
