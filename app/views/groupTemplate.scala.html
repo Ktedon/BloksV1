@@ -2,6 +2,8 @@
 
 @main("Welcome to Bloks") {
 
+  @println(groupData)
+
 <nav class="navbar white navbar-color" style="box-shadow: 0px 5px 5px black; position: fixed;">
     <a href="/home/@username" class="navbar-brand" style="color: black;">
       <img src="@routes.Assets.versioned("images/method-draw-image-1.svg")" alt="Kiwi standing on oval" style="width: 180px;">
@@ -143,7 +145,6 @@
 
                       <div style="width: 90%; margin-left: 5%; max-height: 500px; overflow: scroll;">
                         @threadsUsers.reverse.map { thread =>
-
 
 
                           @if(currentUser.id == thread._1.userId) {

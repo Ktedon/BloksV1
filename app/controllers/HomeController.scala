@@ -341,8 +341,6 @@ class HomeController @Inject() (
                               implicit val j = found
                               modelPersistent
                                 .getGroupThreads(
-                                  emailFound,
-                                  passwordFound,
                                   found.id
                                 )
                                 .flatMap { implicit threads =>
@@ -433,45 +431,55 @@ class HomeController @Inject() (
             case Some(emailFound) =>
               password match {
                 case Some(passwordFound) =>
-                  modelPersistent.getGroups(emailFound, passwordFound).flatMap {
-                    groups =>
-                      // Future.successful(Ok("Yeah"))
-                      groups
-                        .filter(group => group.name == groupName)
-                        .headOption match {
-                        case Some(found) =>
-                          modelPersistent
-                            .addGroupThread(
-                              emailFound,
-                              passwordFound,
-                              found.id,
-                              formData.parentID.toInt,
-                              formData.title,
-                              formData.text
-                            )
-                            .flatMap { addCount =>
-                              if (addCount) {
-                                Future.successful(
-                                  Redirect(
-                                    routes.HomeController.group(name, groupName)
+                  modelPersistent.validateUser(emailFound, passwordFound).flatMap { userOption =>
+                    userOption match {
+                      case Some(userFound) =>
+                        modelPersistent.getGroups(emailFound, passwordFound).flatMap {
+                          groups =>
+                            // Future.successful(Ok("Yeah"))
+                            groups
+                              .filter(group => group.name == groupName)
+                              .headOption match {
+                              case Some(found) =>
+                                modelPersistent
+                                  .addGroupThread(
+                                    found.id,
+                                    formData.parentID.toInt,
+                                    formData.title,
+                                    formData.text,
+                                    userFound.id
                                   )
-                                )
-                              } else {
-                                Future.successful(Ok("Nah"))
-                              }
+                                  .flatMap { addCount =>
+                                    if (addCount) {
+                                      Future.successful(
+                                        Redirect(
+                                          routes.HomeController.group(name, groupName)
+                                        )
+                                      )
+                                    } else {
+                                      Future.successful(BadRequest("Nah"))
+                                    }
+                                  }
+
+                              case None => Future.successful(BadRequest("Bummer"))
                             }
 
-                        case None => Future.successful(Ok("Bummer"))
-                      }
+                        }
+                      case None            =>
+                      Future.successful(
+                        BadRequest("Something went wrong. Try again later.")
+                      )
+                    }
+
 
                   }
                 case None =>
                   Future.successful(
-                    Ok("Something went wrong. Try again later.")
+                    BadRequest("Something went wrong. Try again later.")
                   )
               }
             case None =>
-              Future.successful(Ok("Something went wrong. Try again later."))
+              Future.successful(BadRequest("Something went wrong. Try again later."))
           }
         }
       )

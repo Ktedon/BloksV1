@@ -477,50 +477,45 @@ class DatabaseModel(db: Database)(implicit ec: ExecutionContext) {
   }
 
   def getGroupThreads(
-      email: String,
-      password: String,
       groupID: Int
   ): Future[Seq[GroupThreadRow]] = {
 
-    validateUser(email, password).flatMap { user =>
-      user.headOption match {
-        case Some(found) =>
-          db.run(
-            GroupThread.filter(thread => thread.groupId === groupID).result
-          )
+      db.run(
+        GroupThread.filter(thread => thread.groupId === groupID).result
+      )
 
-        case None => Future.successful(Seq.empty)
-      }
-    }
+      // db.run(
+      //   (
+      //     for {
+      //       thread <- GroupThread if thread.groupId === groupID
+      //     } yield thread
+      //   ).map { thread =>
+      //     thread
+      //   }
+      // )
+
+
   }
 
   def addGroupThread(
-      email: String,
-      password: String,
       groupID: Int,
       parentID: Int,
       title: String,
-      text: String
+      text: String,
+      userId: Int
   ): Future[Boolean] = {
 
-    validateUser(email, password).flatMap { user =>
-      user.headOption match {
-        case Some(found) =>
-          db.run(
-            GroupThread += GroupThreadRow(
-              -1,
-              groupID,
-              found.id,
-              parentID,
-              title,
-              text,
-              new java.sql.Timestamp(System.currentTimeMillis())
-            )
-          ).map(addCount => addCount > 0)
-
-        case None => Future.successful(false)
-      }
-    }
+    db.run(
+      GroupThread += GroupThreadRow(
+        -1,
+        groupID,
+        userId,
+        parentID,
+        title,
+        text,
+        new java.sql.Timestamp(System.currentTimeMillis())
+      )
+    ).map(addCount => addCount > 0)
   }
 
   def addMessage(from: Int, to: Int, message: String): Future[Boolean] = {
