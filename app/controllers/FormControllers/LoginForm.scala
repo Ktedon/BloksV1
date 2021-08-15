@@ -9,8 +9,8 @@ case class LoginForm(email: String, password: String)
 object LoginForm {
 	val form: Form[LoginForm] = Form(
 		mapping(
-			  "email"  -> email
-			, "password"  -> nonEmptyText(1, 149)
+			  "email"    -> email
+			, "password" -> nonEmptyText(1, 149)
 		)(LoginForm.apply)(LoginForm.unapply)
 	)
 }

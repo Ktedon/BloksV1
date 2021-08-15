@@ -9,7 +9,7 @@ case class ChangeSexForm(newSex: String)
 object ChangeSexForm {
 	val form: Form[ChangeSexForm] = Form(
 		mapping(
-			"newSex"  -> nonEmptyText(1, 49)
+			"newSex" -> nonEmptyText(1, 49)
 		)(ChangeSexForm.apply)(ChangeSexForm.unapply)
 	)
 }

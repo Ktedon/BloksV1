@@ -30,7 +30,7 @@
 <div style="height: 350px; transform: translateY(45px);">
    <div align="center">
       <div class="container">
-          @helper.form(action = routes.HomeController.groupSearchPost(username), Symbol("class") -> "form") {
+          @helper.form(action = routes.GroupController.groupSearchPost(username), Symbol("class") -> "form") {
             @helper.CSRF.formField
             <div class="finder">
                <div class="finder__outer">
@@ -66,7 +66,7 @@
     </div>
     <div class="card-content">
       <div style="display: none;" id="createForm">
-      @helper.form(action = routes.HomeController.groupPost(username)) {
+      @helper.form(action = routes.GroupController.groupPost(username)) {
         @helper.CSRF.formField
 
         <header style="text-align: left;">Group Name:</header>
@@ -123,7 +123,7 @@
                     <img class="icon" src="@group.icon" height="50px" width="50px">
                 </div>
                 <div class="col xs-8 sm-8 md-8 lg-8 xl-8">
-                    <a href="/home/@username/group/@group.name" style="text-align: left; transform: translateY(40px);"><h2>@group.name</h2></a>
+                    <a href="/home/@username/group/@group.id" style="text-align: left; transform: translateY(40px);"><h2>@group.name</h2></a>
                 </div>
                 <div class="col xs-3 sm-3 md-3 lg-3 xl-3">
                     @{

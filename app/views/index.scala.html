@@ -32,7 +32,7 @@
           </div>
       </div>
       <div class="card-content">
-        @helper.form(action = routes.HomeController.indexPost) {
+        @helper.form(action = routes.IndexController.indexPost) {
           @helper.CSRF.formField
           <fieldset class="fieldset-custom">
             <legend><div style="margin-left: 5px;">School Email:</div></legend>
@@ -49,7 +49,6 @@
             @helper.inputText(registerForm("password")
               , Symbol("_label") -> null
               , Symbol("_showConstraints") -> false
-              , Symbol("type") -> "password"
               , Symbol("class") -> "input form-input hover-grow"
               , Symbol("placeholder") -> "FeminismRocks123"
             )

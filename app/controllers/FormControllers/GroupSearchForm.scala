@@ -9,7 +9,7 @@ case class GroupSearchForm(query: String)
 object GroupSearchForm {
 	val form: Form[GroupSearchForm] = Form(
 		mapping(
-			"query"  -> nonEmptyText(1, 149)
+			"query" -> nonEmptyText(1, 149)
 		)(GroupSearchForm.apply)(GroupSearchForm.unapply)
 	)
 }

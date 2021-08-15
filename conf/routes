@@ -4,50 +4,42 @@
 # ~~~~
 
 
-GET     /home/:name                 controllers.HomeController.home(name: String)
+GET     /home/:name                   controllers.HomeController.home(name: String)
 
-GET     /                           controllers.HomeController.index()
-POST    /                           controllers.HomeController.indexPost()
+GET     /home/:yourName/message/:toID controllers.MessageController.message(yourName: String, toID: Int)
+POST    /home/addMessage              controllers.MessageController.createMessagePost
 
-GET     /home/:yourName/message/:toID controllers.HomeController.message(yourName: String, toID: Int)
+GET     /home/:name/groups            controllers.GroupController.groups(name: String)
+POST    /home/:name/createGroup       controllers.GroupController.groupPost(name: String)
 
-POST    /home/addMessage controllers.HomeController.createMessagePost
+GET     /home/:name/group/:group      controllers.GroupController.group(name: String, group: Int)
+POST    /home/:name/group/:group      controllers.GroupController.createThreadPost(name: String, group: String)
+POST    /home/:name/groupSearchPost   controllers.GroupController.groupSearchPost(name: String)
 
-GET     /home/:name/groups          controllers.HomeController.groups(name: String)
-POST    /home/:name/createGroup     controllers.HomeController.groupPost(name: String)
+POST    /home/:name/homeSearchPost    controllers.HomeController.homeSearchPost(name: String)
 
-GET     /home/:name/group/:group    controllers.HomeController.group(name: String, group: String)
-POST    /home/:name/group/:group    controllers.HomeController.createThreadPost(name: String, group: String, extendsID: Int)
+GET     /home/:userId/portfolio       controllers.PortfolioController.portfolio(userId: Int)
+GET     /home/poke/:pokeId            controllers.PortfolioController.poke(pokeId: Int)
 
-POST    /home/:name/homeSearchPost  controllers.HomeController.homeSearchPost(name: String)
-POST    /home/:name/groupSearchPost controllers.HomeController.groupSearchPost(name: String)
+GET     /                             controllers.IndexController.index()
+POST    /                             controllers.IndexController.indexPost()
 
-GET     /register                   controllers.HomeController.register()
-POST    /registerPost               controllers.HomeController.registerPost()
+GET     /about                        controllers.IndexController.about()
+GET     /donate                       controllers.IndexController.index()
 
-GET     /home/:userId/portfolio         controllers.HomeController.portfolio(userId: Int)
-GET     /home/poke/:pokeId      controllers.HomeController.poke(pokeId: Int)
-# GET     /home/:name/friend:friendId   controllers.HomeController.portfolio(name: String, pokeId: Int)
-# GET     /home/:name/unfriend:friendId controllers.HomeController.portfolio(name: String, pokeId: Int)
+GET     /register                     controllers.IndexController.register()
+POST    /registerPost                 controllers.IndexController.registerPost()
 
-GET     /about                      controllers.HomeController.about()
+GET     /emailValidateUser/:key       controllers.IndexController.changeEmailValidation(key: String)
+POST    /emailValidateUserPost/:key   controllers.IndexController.changeEmailValidationPost(key: String)
 
-GET     /donate                     controllers.HomeController.index()
+GET     /darnit-I-forgot-my-passcode  controllers.IndexController.darnitIForgotMyPasscode()
 
-GET     /home/:name/settings         controllers.HomeController.settings(name: String)
-POST    /home/changeIcon             controllers.HomeController.changeIconPost()
-POST    /home/deleteAccount          controllers.HomeController.deleteAccountPost
-POST    /home/changeGender           controllers.HomeController.changeGenderPost
-POST    /home/changeGenderVisibility controllers.HomeController.changeGenderVisibilityPost
-
-GET     /emailValidateUser/:key     controllers.HomeController.changeEmailValidation(key: String)
-POST    /emailValidateUserPost/:key controllers.HomeController.changeEmailValidationPost(key: String)
-
-
-GET     /darnit-I-forgot-my-passcode controllers.HomeController.darnitIForgotMyPasscode()
-
-GET     /404                        controllers.HomeController.FourZeroFour()
-
+GET     /home/:name/settings          controllers.SettingController.settings(name: String)
+POST    /home/changeIcon              controllers.SettingController.changeIconPost()
+POST    /home/deleteAccount           controllers.SettingController.deleteAccountPost
+POST    /home/changeGender            controllers.SettingController.changeGenderPost
+POST    /home/changeGenderVisibility  controllers.SettingController.changeGenderVisibilityPost
 
 
 

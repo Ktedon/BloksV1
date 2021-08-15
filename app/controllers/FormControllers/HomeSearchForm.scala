@@ -9,7 +9,7 @@ case class HomeSearchForm(query: String)
 object HomeSearchForm {
 	val form: Form[HomeSearchForm] = Form(
 		mapping(
-			"query"  -> nonEmptyText(1, 199)
+			"query" -> nonEmptyText(1, 199)
 		)(HomeSearchForm.apply)(HomeSearchForm.unapply)
 	)
 }

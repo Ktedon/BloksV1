@@ -32,7 +32,7 @@
 					👍
 				</div>
 		</div>
-		@helper.form(action = routes.HomeController.registerPost) {
+		@helper.form(action = routes.IndexController.registerPost) {
 		@helper.CSRF.formField
 			<div class="card-content">
 				<div class="" id="page1">
@@ -64,7 +64,6 @@
 						@helper.inputText(registerForm("password")
 							, Symbol("_label") -> null
 							, Symbol("_showConstraints") -> false
-							, Symbol("type") -> "password"
 							, Symbol("class") -> "input form-input hover-grow"
 							, Symbol("placeholder") -> "FeminismRocks123"
 						)

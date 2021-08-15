@@ -9,8 +9,8 @@ case class GroupCreateForm(name: String, `type`: String)
 object GroupCreateForm {
 	val form: Form[GroupCreateForm] = Form(
 		mapping(
-			"name"  -> nonEmptyText(1, 199)
-			, "type"  -> nonEmptyText(1, 3)
+			"name"   -> nonEmptyText(1, 199)
+			, "type" -> nonEmptyText(1, 3)
 		)(GroupCreateForm.apply)(GroupCreateForm.unapply)
 	)
 }

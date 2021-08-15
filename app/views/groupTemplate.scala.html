@@ -1,30 +1,30 @@
-@(username: String, group: String, form1: Form[GroupSearchForm], form: Form[ThreadCreateForm], currentUser: models.PublicUser)(implicit request: RequestHeader, messagesProvider: MessagesProvider, groupData: models.PublicGroup, threads: Seq[models.Tables.GroupThreadRow], threadsUsers: Seq[Tuple2[models.Tables.GroupThreadRow, models.Tables.BloksUserRow]])
+@(form1: Form[GroupSearchForm], form: Form[ThreadCreateForm], currentUser: models.PublicUser, groupData: models.PublicGroup)(implicit request: RequestHeader, messagesProvider: MessagesProvider, threadsUsers: Seq[Tuple2[models.Tables.GroupThreadRow, models.Tables.BloksUserRow]])
 
 @main("Welcome to Bloks") {
 
   @println(groupData)
 
 <nav class="navbar white navbar-color" style="box-shadow: 0px 5px 5px black; position: fixed;">
-    <a href="/home/@username" class="navbar-brand" style="color: black;">
+    <a href="/home/@currentUser.name" class="navbar-brand" style="color: black;">
       <img src="@routes.Assets.versioned("images/method-draw-image-1.svg")" alt="Kiwi standing on oval" style="width: 180px;">
     </a>
     <input class="navbar-menu-target" type="checkbox" id="example-nav">
     <label class="navbar-menu-toggle" for="example-nav"><span class="navbar-icon"></span></label>
     <ul class="navbar-menu-items" >
         <li>
-            <a href="/home/@username"><span style="color: black;">Home</span></a>
+            <a href="/home/@currentUser.name"><span style="color: black;">Home</span></a>
         </li>
         <li>
             <a href="/home/@currentUser.id/portfolio"><span style="color: black;">Portfolio</span></a>
         </li>
         <li>
-            <a href="/home/@username/groups"><span style="color: black;">Groups</span></a>
+            <a href="/home/@currentUser.name/groups"><span style="color: black;">Groups</span></a>
         </li>
         <li>
-            <a href="/home/@username/settings"><span style="color: black;">Settings</span></a>
+            <a href="/home/@currentUser.name/settings"><span style="color: black;">Settings</span></a>
         </li>
         <li>
-            <a href="/home/@username/donate"><span style="color: black;">Donate</span></a>
+            <a href="/home/@currentUser.name/donate"><span style="color: black;">Donate</span></a>
         </li>
     </ul>
 </nav>
@@ -32,7 +32,7 @@
 <div style="height: 350px; transform: translateY(45px);">
    <div align="center">
       <div class="container">
-        @helper.form(action = routes.HomeController.groupSearchPost(username), Symbol("class") -> "form") {
+        @helper.form(action = routes.GroupController.groupSearchPost(currentUser.name), Symbol("class") -> "form") {
           @helper.CSRF.formField
           <div class="finder">
              <div class="finder__outer">
@@ -115,12 +115,9 @@
                   <div class="banner-header">
                       <h5>Threads:</h5>
                   </div>
-
-
-
                   <div class="banner-body">
                     <div>Create Message:</div>
-                      @helper.form(action = routes.HomeController.createThreadPost(username, group, 1)
+                      @helper.form(action = routes.GroupController.createThreadPost(currentUser.name, groupData.name)
                       , Symbol("class") -> "form-control") {
                         @helper.CSRF.formField
                         @helper.inputText(form("title")

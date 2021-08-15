@@ -86,12 +86,10 @@
 
 
 
-  @helper.form(action = routes.HomeController.createMessagePost
+  @helper.form(action = routes.MessageController.createMessagePost
     , Symbol("class") -> "form-control"
   ) {
     @helper.CSRF.formField
-
-
 
       <input type="" name="toID" style="display: none;" value="@toID">
 

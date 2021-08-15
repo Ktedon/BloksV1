@@ -1,4 +1,4 @@
-@(username: String, homeUserId: Int)(implicit request: RequestHeader, messagesProvider: MessagesProvider, notifs: Seq[models.Tables.NotificationRow], form: Form[controllers.HomeSearchForm])
+@(username: String, homeUserId: Int, form: Form[controllers.HomeSearchForm])(implicit request: RequestHeader, messagesProvider: MessagesProvider, notifs: Seq[models.Tables.NotificationRow])
 
 
 @main("Welcome to Bloks") {

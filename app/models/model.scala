@@ -9,6 +9,10 @@ object CodeGen extends App {
     "org.postgresql.Driver",
     "jdbc:postgresql://localhost/exuldb?user=exul&password=admin222",
     "/home/bradly/Documents/bloks/app",
-    "models", None, None, true, false
+    "models",
+    None,
+    None,
+    true,
+    false
   )
 }

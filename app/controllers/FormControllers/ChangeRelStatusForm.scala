@@ -9,7 +9,7 @@ case class ChangeRelStatusForm(newStatus: String)
 object ChangeRelStatusForm {
 	val form: Form[ChangeRelStatusForm] = Form(
 		mapping(
-			"newStatus"  -> nonEmptyText(1, 99)
+			"newStatus" -> nonEmptyText(1, 99)
 		)(ChangeRelStatusForm.apply)(ChangeRelStatusForm.unapply)
 	)
 }

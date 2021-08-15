@@ -9,7 +9,7 @@ case class ChangePasswordForm(newpwd: String)
 object ChangePasswordForm {
 	val form: Form[ChangePasswordForm] = Form(
 		mapping(
-			"newpwd"  -> nonEmptyText(1, 99)
+			"newpwd" -> nonEmptyText(1, 99)
 		)(ChangePasswordForm.apply)(ChangePasswordForm.unapply)
 	)
 }

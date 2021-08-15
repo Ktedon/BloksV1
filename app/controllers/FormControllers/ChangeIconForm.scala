@@ -9,8 +9,8 @@ case class ChangeIconForm(`type`: String, seed: String)
 object ChangeIconForm {
 	val form: Form[ChangeIconForm] = Form(
 		mapping(
-			"type"  -> nonEmptyText(1, 15)
-			, "seed"  -> nonEmptyText(1, 512)
+			"type"   -> nonEmptyText(1, 15)
+			, "seed" -> nonEmptyText(1, 512)
 		)(ChangeIconForm.apply)(ChangeIconForm.unapply)
 	)
 }

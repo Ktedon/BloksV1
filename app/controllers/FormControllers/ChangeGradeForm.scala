@@ -9,7 +9,7 @@ case class ChangeGradeForm(newGrade: String)
 object ChangeGradeForm {
 	val form: Form[ChangeGradeForm] = Form(
 		mapping(
-			"newGrade"  -> nonEmptyText(1, 49)
+			"newGrade" -> nonEmptyText(1, 49)
 		)(ChangeGradeForm.apply)(ChangeGradeForm.unapply)
 	)
 }

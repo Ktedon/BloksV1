@@ -7,9 +7,9 @@ import play.api.data.validation.Constraints._
 case class ChangeBiographyForm(newBio: String)
 
 object ChangeBiographyForm {
-	val form: Form[ChangeBiographyForm] = Form(
-		mapping(
-			"newBio"  -> nonEmptyText(1, 2000)
-		)(ChangeBiographyForm.apply)(ChangeBiographyForm.unapply)
-	)
+  val form: Form[ChangeBiographyForm] = Form(
+    mapping(
+      "newBio" -> nonEmptyText(1, 2000)
+    )(ChangeBiographyForm.apply)(ChangeBiographyForm.unapply)
+  )
 }
