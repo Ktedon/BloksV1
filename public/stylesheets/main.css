@@ -15,10 +15,7 @@ p {
 
 html {
   height: 100%;
-  background: #2AD275;
-background: -webkit-radial-gradient(top left, #2AD275, #111B69);
-background: -moz-radial-gradient(top left, #2AD275, #111B69);
-background: radial-gradient(to bottom right, #2AD275, #111B69);
+  background: lightblue;
 position: relative;
 }
 
