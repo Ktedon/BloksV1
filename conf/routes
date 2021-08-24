@@ -8,6 +8,8 @@ GET     /home/:name                   controllers.HomeController.home(name: Stri
 
 GET     /home/:yourName/message/:toID controllers.MessageController.message(yourName: String, toID: Int)
 POST    /home/addMessage              controllers.MessageController.createMessagePost
+GET     /home/chatSocket              controllers.MessageController.messageSocket
+GET     /home/:name/contacts          controllers.MessageController.contacts(name: String)
 
 GET     /home/:name/groups            controllers.GroupController.groups(name: String)
 POST    /home/:name/createGroup       controllers.GroupController.groupPost(name: String)
@@ -43,6 +45,10 @@ POST    /home/changeGenderVisibility  controllers.SettingController.changeGender
 
 
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Data API
+
+POST /validateUser                     controllers.IndexController.validateUser
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

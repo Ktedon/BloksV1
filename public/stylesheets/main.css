@@ -4,19 +4,11 @@ p {
 }
 
 
-.pell-content{
-  background: white;
-  border-bottom: 1px solid black;
-}
-
-.pell-actionbar {
-  background-color: black;
-}
 
 html {
   height: 100%;
   background: lightblue;
-position: relative;
+  position: relative;
 }
 
 html {

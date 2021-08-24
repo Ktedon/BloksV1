@@ -18,6 +18,7 @@ import model._
 import scala.concurrent.Future
 
 import play.api.libs.mailer._
+import play.api.libs.json._
 
 @Singleton
 class IndexController @Inject() (
@@ -187,4 +188,28 @@ class IndexController @Inject() (
       )
   }
 
+  def validateUser = Action.async {
+    implicit request: Request[AnyContent] =>
+      LoginForm.form.bindFromRequest.fold(
+        formWithErrors => {
+          Future.successful(
+            BadRequest(
+              "Something wen't wrong."
+            )
+          )
+        },
+        formData => {
+          userModel.validateUser(formData.email, formData.password).map {
+            _ match {
+              case Some(userFound) =>
+                val output: JsValue = Json.parse("{\"isvalidated\" : \"true\"}")
+                Ok(output)
+              case None            =>
+                val output: JsValue = Json.parse("{\"isvalidated\" : \"false\"}")
+                Ok(output)
+            }
+          }
+        }
+      )
+  }
 }

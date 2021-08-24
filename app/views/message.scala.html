@@ -18,7 +18,10 @@
             <a href="/home/@fromID/portfolio"><span style="color: black;">Portfolio</span></a>
         </li>
         <li>
-            <a href="/home/@username/groups"><span style="color: black;">Groups</span></a>
+            <a href="/home/@username/contacts"><span style="color: black;">Groups</span></a>
+        </li>
+        <li>
+            <a href="/home/@username/donate"><span style="color: black;">Contacts</span></a>
         </li>
         <li>
             <a href="/home/@username/settings"><span style="color: black;">Settings</span></a>
@@ -82,7 +85,7 @@
 
 
 <div style="width: 70%; margin-left: 15%; margin-bottom: 10px; overflow: auto;" class="form-control">
-  <!-- <textarea id="chat-input" style="float: left; resize: vertical;"></textarea> -->
+  <input type="hidden" id="ws-route" value="@routes.MessageController.messageSocket.absoluteURL()">
 
 
 
@@ -96,6 +99,7 @@
 
       @helper.textarea(form("message")
         , Symbol("_label") -> null
+        , Symbol("id") -> "chat-input"
         , Symbol("_showConstraints") -> false
         , Symbol("class") -> "input"
         , Symbol("placeholder") -> "Message Content"
@@ -145,7 +149,6 @@
         </div>
     </div>
   </div>
-
 
   <script src="@routes.Assets.versioned("javascripts/chat.js")" type="text/javascript"></script>
 }

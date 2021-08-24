@@ -21,6 +21,9 @@
             <a href="/home/@currentUser.name/groups"><span style="color: black;">Groups</span></a>
         </li>
         <li>
+            <a href="/home/@currentUser.name/contacts"><span style="color: black;">Contacts</span></a>
+        </li>
+        <li>
             <a href="/home/@currentUser.name/settings"><span style="color: black;">Settings</span></a>
         </li>
         <li>
@@ -29,33 +32,7 @@
     </ul>
 </nav>
 
-<div style="height: 350px; transform: translateY(45px);">
-   <div align="center">
-      <div class="container">
-        @helper.form(action = routes.GroupController.groupSearchPost(currentUser.name), Symbol("class") -> "form") {
-          @helper.CSRF.formField
-          <div class="finder">
-             <div class="finder__outer">
-                <div class="finder__inner">
-                   <div class="finder__icon" ref="icon"></div>
 
-                      @helper.inputText(form1("query")
-                        , Symbol("_label") -> null
-                        , Symbol("_showConstraints") -> false
-                        , Symbol("class") -> "finder__input"
-                        , Symbol("placeholder") -> "Social Justice Unit"
-                        , Symbol("style") -> "margin-top: 10px;"
-                      )
-
-
-
-                </div>
-             </div>
-          </div>
-       }
-      </div>
-   </div>
-</div>
 
 <div class="footer" style="padding-bottom:10px;">
   <div style="margin-top: 100px;" class="footer">
@@ -148,15 +125,14 @@
 
                             <div class="row">
                                 <div class="col xs-6 sm-8 md-10 lg-10 xl-11">
-                                    <div class="collapsible styled indigo" style="width: 60%; margin-left: 40%;">
-                                      <input type="checkbox" class="collapsible-toggle" id="@(thread._1.id) styled" name="collapsible-checkbox" checked />
-                                      <label class="collapsible-header" for="@(thread._1.id) styled">
-                                          @thread._1.threadTitle <span style="font-size: 15px; color: lightgray;">@thread._1.threadDate</span>
-                                      </label>
-                                      <div class="collapsible-body">
+                                  <div class="message green">
+                                      <div class="message-header">
+                                          <p>@thread._1.threadTitle <span style="font-size: 15px; color: lightgray;">@thread._1.threadDate</span></p>
+                                      </div>
+                                      <div class="message-body">
                                           <p style="word-break: break-all;">@thread._1.thread</p>
                                       </div>
-                                    </div>
+                                  </div>
                                 </div>
                                 <div class="col xs-6 sm-4 md-2 lg-2 xl-1">
                                   <a href="/home/@(thread._2.id)/portfolio">
@@ -167,6 +143,7 @@
 
 
                             </div>
+
 
 
                           } else {
@@ -181,18 +158,14 @@
 
                                 </div>
                                 <div class="col xs-6 sm-8 md-10 lg-10 xl-11">
-                                    <div class="collapsible styled red" style="width: 60%;">
-                                      <input type="checkbox" class="collapsible-toggle" id="@(thread._1.id) styled" name="collapsible-checkbox" checked />
-                                      <label class="collapsible-header" for="@(thread._1.id) styled">
+                                  <div class="message indigo">
+                                      <div class="message-header">
                                           @thread._1.threadTitle <span style="font-size: 15px; color: lightgray;">@thread._1.threadDate</span>
-                                      </label>
-                                      <div class="collapsible-body">
-                                          <p style="word-break: break-all;">
-                                            @thread._1.thread
-                                          </p>
                                       </div>
-
-                                    </div>
+                                      <div class="message-body">
+                                          @thread._1.thread
+                                      </div>
+                                  </div>
                                 </div>
 
                             </div>

@@ -14,9 +14,38 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Array(BlokGroup.schema, BloksSchool.schema, BloksUser.schema, Friend.schema, GroupMembership.schema, GroupThread.schema, Message.schema, Notification.schema).reduceLeft(_ ++ _)
+  lazy val schema: profile.SchemaDescription = Array(AsciiflowBoard.schema, BlokGroup.schema, BloksSchool.schema, BloksUser.schema, Contact.schema, Friend.schema, GroupMembership.schema, GroupThread.schema, Message.schema, Notification.schema).reduceLeft(_ ++ _)
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
+
+  /** Entity class storing rows of table AsciiflowBoard
+   *  @param id Database column id SqlType(serial), AutoInc, PrimaryKey
+   *  @param school Database column school SqlType(int4)
+   *  @param groupId Database column group_id SqlType(int4)
+   *  @param board Database column board SqlType(text) */
+  case class AsciiflowBoardRow(id: Int, school: Int, groupId: Int, board: String)
+  /** GetResult implicit for fetching AsciiflowBoardRow objects using plain SQL queries */
+  implicit def GetResultAsciiflowBoardRow(implicit e0: GR[Int], e1: GR[String]): GR[AsciiflowBoardRow] = GR{
+    prs => import prs._
+    AsciiflowBoardRow.tupled((<<[Int], <<[Int], <<[Int], <<[String]))
+  }
+  /** Table description of table asciiflow_board. Objects of this class serve as prototypes for rows in queries. */
+  class AsciiflowBoard(_tableTag: Tag) extends profile.api.Table[AsciiflowBoardRow](_tableTag, "asciiflow_board") {
+    def * = (id, school, groupId, board) <> (AsciiflowBoardRow.tupled, AsciiflowBoardRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(id), Rep.Some(school), Rep.Some(groupId), Rep.Some(board))).shaped.<>({r=>import r._; _1.map(_=> AsciiflowBoardRow.tupled((_1.get, _2.get, _3.get, _4.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column id SqlType(serial), AutoInc, PrimaryKey */
+    val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
+    /** Database column school SqlType(int4) */
+    val school: Rep[Int] = column[Int]("school")
+    /** Database column group_id SqlType(int4) */
+    val groupId: Rep[Int] = column[Int]("group_id")
+    /** Database column board SqlType(text) */
+    val board: Rep[String] = column[String]("board")
+  }
+  /** Collection-like TableQuery object for table AsciiflowBoard */
+  lazy val AsciiflowBoard = new TableQuery(tag => new AsciiflowBoard(tag))
 
   /** Entity class storing rows of table BlokGroup
    *  @param id Database column id SqlType(serial), AutoInc, PrimaryKey
@@ -157,6 +186,44 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table BloksUser */
   lazy val BloksUser = new TableQuery(tag => new BloksUser(tag))
+
+  /** Entity class storing rows of table Contact
+   *  @param id Database column id SqlType(serial), AutoInc, PrimaryKey
+   *  @param userId Database column user_id SqlType(int4)
+   *  @param contactUserId Database column contact_user_id SqlType(int4)
+   *  @param contactName Database column contact_name SqlType(varchar), Length(150,true)
+   *  @param contactProfilePic Database column contact_profile_pic SqlType(varchar), Length(650,true)
+   *  @param contactElectedRank Database column contact_elected_rank SqlType(int2)
+   *  @param contactGrade Database column contact_grade SqlType(int4) */
+  case class ContactRow(id: Int, userId: Int, contactUserId: Int, contactName: String, contactProfilePic: String, contactElectedRank: Short, contactGrade: Int)
+  /** GetResult implicit for fetching ContactRow objects using plain SQL queries */
+  implicit def GetResultContactRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Short]): GR[ContactRow] = GR{
+    prs => import prs._
+    ContactRow.tupled((<<[Int], <<[Int], <<[Int], <<[String], <<[String], <<[Short], <<[Int]))
+  }
+  /** Table description of table contact. Objects of this class serve as prototypes for rows in queries. */
+  class Contact(_tableTag: Tag) extends profile.api.Table[ContactRow](_tableTag, "contact") {
+    def * = (id, userId, contactUserId, contactName, contactProfilePic, contactElectedRank, contactGrade) <> (ContactRow.tupled, ContactRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(id), Rep.Some(userId), Rep.Some(contactUserId), Rep.Some(contactName), Rep.Some(contactProfilePic), Rep.Some(contactElectedRank), Rep.Some(contactGrade))).shaped.<>({r=>import r._; _1.map(_=> ContactRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column id SqlType(serial), AutoInc, PrimaryKey */
+    val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
+    /** Database column user_id SqlType(int4) */
+    val userId: Rep[Int] = column[Int]("user_id")
+    /** Database column contact_user_id SqlType(int4) */
+    val contactUserId: Rep[Int] = column[Int]("contact_user_id")
+    /** Database column contact_name SqlType(varchar), Length(150,true) */
+    val contactName: Rep[String] = column[String]("contact_name", O.Length(150,varying=true))
+    /** Database column contact_profile_pic SqlType(varchar), Length(650,true) */
+    val contactProfilePic: Rep[String] = column[String]("contact_profile_pic", O.Length(650,varying=true))
+    /** Database column contact_elected_rank SqlType(int2) */
+    val contactElectedRank: Rep[Short] = column[Short]("contact_elected_rank")
+    /** Database column contact_grade SqlType(int4) */
+    val contactGrade: Rep[Int] = column[Int]("contact_grade")
+  }
+  /** Collection-like TableQuery object for table Contact */
+  lazy val Contact = new TableQuery(tag => new Contact(tag))
 
   /** Entity class storing rows of table Friend
    *  @param id Database column id SqlType(serial), AutoInc, PrimaryKey

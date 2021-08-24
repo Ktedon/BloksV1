@@ -19,6 +19,9 @@
             <a href="/home/@username/groups"><span style="color: black;">Groups</span></a>
         </li>
         <li>
+            <a href="/home/@username/contacts"><span style="color: black;">Contacts</span></a>
+        </li>
+        <li>
             <a href="/home/@username/settings"><span style="color: black;">Settings</span></a>
         </li>
         <li>
@@ -119,10 +122,10 @@
       @groups.map { group =>
         <div class="notification indigo">
             <div class="row">
-                <div class="col xs-1 sm-1 md-1 lg-1 xl-1">
+                <div class="col xs-2 sm-2 md-1 lg-1 xl-1">
                     <img class="icon" src="@group.icon" height="50px" width="50px">
                 </div>
-                <div class="col xs-8 sm-8 md-8 lg-8 xl-8">
+                <div class="col xs-7 sm-7 md-8 lg-8 xl-8">
                     <a href="/home/@username/group/@group.id" style="text-align: left; transform: translateY(40px);"><h2>@group.name</h2></a>
                 </div>
                 <div class="col xs-3 sm-3 md-3 lg-3 xl-3">

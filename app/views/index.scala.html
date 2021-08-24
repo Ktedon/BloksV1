@@ -1,7 +1,10 @@
 @(registerForm: Form[LoginForm])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
 
 @main("Welcome to Bloks") {
-
+<!-- 
+<input type="hidden" id="csrfToken" value="@helper.CSRF.getToken.value">
+<input type="hidden" id="validateRoute" value="@routes.IndexController.validateUser()">
+ -->
 <nav class="navbar white navbar-color" style="box-shadow: 0px 5px 5px black;">
     <a href="/" class="navbar-brand" style="color: black;">
       <img src="@routes.Assets.versioned("images/method-draw-image-1.svg")" alt="Kiwi standing on oval" style="width: 180px;">

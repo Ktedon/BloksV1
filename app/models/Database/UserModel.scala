@@ -86,7 +86,7 @@ class UserModel(db: Database)(implicit ec: ExecutionContext) {
         data.biologicalSex,
         data.biography,
         data.password
-      ) || (getEmailExtension(data.email) != "vt.ewsd.org")
+      ) /*|| (getEmailExtension(data.email) != "vt.ewsd.org")*/
     )
       Future.successful(false)
     else

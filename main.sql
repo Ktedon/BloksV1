@@ -71,3 +71,21 @@ CREATE TABLE message (
 	message VARCHAR(50000),
 	date_of_message timestamp with time zone NOT NULL
 );
+
+CREATE TABLE contact (
+	id SERIAL PRIMARY KEY,
+	user_id INT4 NOT NULL,
+	contact_user_id INT4 NOT NULL,
+	contact_name VARCHAR(150) NOT NULL,
+	contact_profile_pic VARCHAR(650) NOT NULL,
+	contact_elected_rank INT2 NOT NULL,
+	contact_grade INT4 NOT NULL
+);
+
+CREATE TABLE asciiflow_board (
+	id SERIAL PRIMARY KEY,
+	school INT4 NOT NULL,
+	group_id INT4 NOT NULL,
+	board TEXT NOT NULL,
+	color_map TEXT NOT NULL,
+);

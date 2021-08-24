@@ -17,11 +17,15 @@ import slick.jdbc.PostgresProfile.api._
 import model._
 import scala.concurrent.Future
 
+import play.api.libs.streams.ActorFlow
+import akka.actor.ActorSystem
+import akka.stream.Materializer
+
 @Singleton
 class MessageController @Inject() (
     protected val dbConfigProvider: DatabaseConfigProvider,
     controllerComponents: ControllerComponents
-)(implicit ec: ExecutionContext)
+)(implicit ec: ExecutionContext, system: ActorSystem, mat: Materializer)
     extends AbstractController(controllerComponents)
     with HasDatabaseConfigProvider[JdbcProfile]
     with play.api.i18n.I18nSupport {
@@ -134,5 +138,46 @@ class MessageController @Inject() (
           }
         }
       )
+  }
+
+  def messageSocket = WebSocket.acceptOrResult[String, String] { request =>
+    val email: Option[String] = request.session.get("email")
+    val password: Option[String] = request.session.get("password")
+
+    if (email.isInstanceOf[Some[String]] && password.isInstanceOf[Some[String]])
+      userModel.validateUser(email.get, password.get).map { userOption =>
+        if (userOption.isInstanceOf[Some[models.Tables.BloksUserRow]])
+          Right(ActorFlow.actorRef { out =>
+            ChatActor.props(out, messageModel)
+          })
+        else
+          Left(Forbidden)
+      }
+    else
+      Future.successful(Left(Forbidden))
+  }
+
+  def contacts(name: String) = Action.async {
+    implicit request: Request[AnyContent] =>
+
+    val email: Option[String] = request.session.get("email")
+    val password: Option[String] = request.session.get("password")
+
+    if (email.isInstanceOf[Some[String]] && password.isInstanceOf[Some[String]])
+      userModel.validateUser(email.get, password.get).flatMap {
+        _ match {
+          case Some(userFound) =>
+            messageModel.getContacts(userFound.id).map { implicit contacts =>
+              implicit val thing = HomeSearchForm.form
+              Ok(views.html.contacts(models.PublicUser.publicUserApply(userFound)))
+            }
+          case None            =>
+            Future.successful(
+              BadRequest("Something went wrong. Try again later.")
+            )
+        }
+      }
+    else
+      Future.successful(BadRequest("Something went wrong. Try again later."))
   }
 }

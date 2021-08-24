@@ -20,6 +20,9 @@
             <a href="/home/@username/groups"><span style="color: black;">Groups</span></a>
         </li>
         <li>
+            <a href="/home/@username/contacts"><span style="color: black;">Contacts</span></a>
+        </li>
+        <li>
             <a href="/home/@username/settings"><span style="color: black;">Settings</span></a>
         </li>
         <li>
@@ -42,7 +45,7 @@
                           , Symbol("_label") -> null
                           , Symbol("_showConstraints") -> false
                           , Symbol("class") -> "finder__input"
-                          , Symbol("placeholder") -> "Group/User Search"
+                          , Symbol("placeholder") -> "User Search"
                           , Symbol("style") -> "margin-top: 10px;"
                         )
 
@@ -80,6 +83,7 @@
                           <a href="/home/@person.id/portfolio"><img src="@person.profilePic" alt="profile" class="icon column" style="border-width: 2px; height: 45px; width: 45px;" align="center"></a>
                       </div>
                       <div class="col xs-4 sm-4 md-3 lg-3 xl-3">
+                        <div>
                           @{
                             person.electedRank match {
                               case 0 =>  <div>Rank: Citizen</div>
@@ -100,9 +104,11 @@
                               case 15 => <div>Rank: House Speaker of Blok Parliament</div>
                             }
                           }
+                        </div>
+                        <div>grade: @person.grade</div>
                       </div>
                       <div class="col xs-3 sm-3 md-4 lg-4 xl-4">
-                          <div>grade: @person.grade</div>
+                          <div></div>
                       </div>
                       <div class="col xs-3 sm-3 md-4 lg-4 xl-4">
                           <a href="/home/@username/message/@person.id"><button type="button">Message</button></a>
