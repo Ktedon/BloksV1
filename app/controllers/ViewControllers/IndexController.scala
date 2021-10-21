@@ -29,13 +29,13 @@ class IndexController @Inject() (
     with HasDatabaseConfigProvider[JdbcProfile]
     with play.api.i18n.I18nSupport {
 
-  private val schoolModel       = new SchoolModel(db)(ec)
-  private val userModel         = new UserModel(db)(ec)
+  private val schoolModel = new SchoolModel(db)(ec)
+  private val userModel = new UserModel(db)(ec)
   private val notificationModel = new NotificationModel(db)(ec)
-  private val groupModel        = new GroupModel(db)(ec)
-  private val messageModel      = new MessageModel(db)(ec)
-  private val homeModel         = new HomeModel(db)(ec)
-  private val settingModel      = new SettingModel(db)(ec)
+  private val groupModel = new GroupModel(db)(ec)
+  private val messageModel = new MessageModel(db)(ec)
+  private val homeModel = new HomeModel(db)(ec)
+  private val settingModel = new SettingModel(db)(ec)
 
   def sendEmail(key: String, emailInput: String) = {
     val cid = "1234"
@@ -50,15 +50,22 @@ class IndexController @Inject() (
       bodyText = Some("Go here for your validation form."),
       bodyHtml = Some(s"""<html>
         <body>
-          <div style="border-radius: 10px; width: 70%; margin-left: 15%; margin-top: 80px; background-color: lightgray;">
+          <div style="border-radius: 10px; width: 70%; margin-left: 15%;
+            margin-top: 80px; background-color: lightgray;">
             <br>
-            <h3 style="text-align: center; margin-top: 20px">Click below to find see the validation form.</h3><br><br>
+            <h3 style="text-align: center; margin-top: 20px">
+              Click below to find see the validation form.</h3><br><br>
             <a href="bloks.re/emailValidateUser/${key}">
-              <button style="display: block; margin: 0 auto; height: 30px; background-color: #4CAF50; border: none; color: white; text-align: center; text-decoration: none; display: block; font-size: 16px;">Click Here!</button>
+              <button style="display: block; margin: 0 auto; height: 30px;
+                background-color: #4CAF50; border: none; color: white;
+                text-align: center; text-decoration: none; display: block;
+                font-size: 16px;">Click Here!</button>
             </a>
             <br>
-            <h3 style="text-align: center; margin-top: 20px">If that does not work go here:</h3><br>
-            <div style="text-align: center;">bloks.re/emailValidateUser/${key}</div>
+            <h3 style="text-align: center; margin-top: 20px">
+              If that does not work go here:</h3><br>
+            <div style="text-align: center;">bloks.re/emailValidateUser/${key}
+            </div>
             <br>
           </div>
         </body>
@@ -72,7 +79,7 @@ class IndexController @Inject() (
   }
 
   def index() = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.index(LoginForm.form))
+    Ok(views.html.index(LoginForm.form, false))
   }
 
   def indexPost() = Action.async { implicit request: Request[AnyContent] =>
@@ -80,12 +87,15 @@ class IndexController @Inject() (
       formWithErrors => {
         Future.successful(
           BadRequest(
-            "I am sorry. But something went wrong. Try again, if that doesn't work then try again later."
+            views.html.error(
+              ErrorMessages.formError
+            )
           )
         )
       },
       formData => {
-        userModel.validateUser(formData.email, formData.password)
+        userModel
+          .validateUser(formData.email, formData.password)
           .map {
             _ match {
               case Some(foundUser) =>
@@ -95,16 +105,40 @@ class IndexController @Inject() (
                     "password" -> formData.password
                   )
               case None =>
-                BadRequest("Something went wrong. Try again later.")
+                BadRequest(views.html.index(LoginForm.form, true))
             }
           }
       }
     )
   }
 
-  def darnitIForgotMyPasscode() = Action {
+  def forgottenPassword() = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.forgottenPassword(false, false))
+  }
+
+  def recoverAccount() = Action.async {
     implicit request: Request[AnyContent] =>
-      Ok("Too bad. You should have written it down.")
+      ForgotPasswordForm.form.bindFromRequest.fold(
+        formWithErrors => {
+          // binding failure, you retrieve the form containing errors:
+          Future.successful(
+            BadRequest(
+              views.html.error(
+                ErrorMessages.formError
+              )
+            )
+          )
+        },
+        formData => {
+          userModel.validateEmail(formData.email).map {
+            _ match {
+              case -1 => Ok(views.html.forgottenPassword(true, false))
+              case 0 => Ok(views.html.forgottenPassword(false, true))
+              case 1 => Ok(views.html.forgottenPassword(false, true))
+            }
+          }
+        }
+      )
   }
 
   def register() = Action { implicit request: Request[AnyContent] =>
@@ -114,10 +148,11 @@ class IndexController @Inject() (
   def registerPost() = Action.async { implicit request: Request[AnyContent] =>
     RegisterForm.form.bindFromRequest.fold(
       formWithErrors => {
-        // binding failure, you retrieve the form containing errors:
         Future.successful(
           BadRequest(
-            "Something wen't wrong."
+            views.html.error(
+              ErrorMessages.formError
+            )
           )
         )
       },
@@ -125,11 +160,15 @@ class IndexController @Inject() (
         userModel.addUser(formData).map {
           if (_)
             Ok(
-              "An email has been sent to your provided email address. There you will find the form to validate your account."
+              """An email has been sent to your provided email address.
+                There you will find the form to validate your account.
+              """
             )
           else
             BadRequest(
-              "Something wen't wrong. Try filling out the form again. You may already have an account or our email service has failed."
+              views.html.error(
+                ErrorMessages.accountCreationError
+              )
             )
         }
       }
@@ -147,68 +186,56 @@ class IndexController @Inject() (
         formWithErrors => {
           Future.successful(
             BadRequest(
-              "Something wen't wrong."
+              views.html.error(
+                ErrorMessages.formError
+              )
             )
           )
         },
         formData => {
-
           userModel
             .validateUserNoEmailVerification(formData.email, formData.password)
             .flatMap {
               _.headOption match {
                 case Some(userFound) =>
-                  if (models.helpers.AuthHelpers.testEmailValidationKey(userFound.id, key))
+                  if (
+                    models.helpers.AuthHelpers
+                      .testEmailValidationKey(userFound.id, key)
+                  )
                     userModel
                       .modifyUserValidation(formData.email, formData.password)
                       .map { hasChanged =>
                         if (hasChanged)
-                          Ok("Yasssss. You can now login")
+                          Ok(
+                            views.html.success(
+                              SuccessMessages.accountCreationSuccess
+                            )
+                          )
                         else
                           BadRequest(
-                            "Noooo. Something wen't wrong unexpectedly and it is totes my fault."
+                            views.html.error(
+                              ErrorMessages.accountCreationError
+                            )
                           )
                       }
-
                   else
                     Future.successful(
                       BadRequest(
-                        "Something is wrong."
+                        views.html.error(
+                          ErrorMessages.accountCreationError
+                        )
                       )
                     )
-                case None            =>
+                case None =>
                   Future.successful(
                     BadRequest(
-                    "Something is wrong."
+                      views.html.error(
+                        ErrorMessages.accountCreationError
+                      )
                     )
                   )
               }
             }
-        }
-      )
-  }
-
-  def validateUser = Action.async {
-    implicit request: Request[AnyContent] =>
-      LoginForm.form.bindFromRequest.fold(
-        formWithErrors => {
-          Future.successful(
-            BadRequest(
-              "Something wen't wrong."
-            )
-          )
-        },
-        formData => {
-          userModel.validateUser(formData.email, formData.password).map {
-            _ match {
-              case Some(userFound) =>
-                val output: JsValue = Json.parse("{\"isvalidated\" : \"true\"}")
-                Ok(output)
-              case None            =>
-                val output: JsValue = Json.parse("{\"isvalidated\" : \"false\"}")
-                Ok(output)
-            }
-          }
         }
       )
   }

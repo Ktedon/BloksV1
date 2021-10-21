@@ -1,4 +1,4 @@
-@(user: models.PublicUser)(implicit request: RequestHeader, messagesProvider: MessagesProvider, contacts: Seq[models.Tables.ContactRow], form: Form[controllers.HomeSearchForm])
+@(user: models.Tables.BloksUserRow)(implicit request: RequestHeader, messagesProvider: MessagesProvider, contacts: Seq[models.Tables.ContactRow], form: Form[controllers.HomeSearchForm])
 
 @main("Welcome to Bloks") {
 

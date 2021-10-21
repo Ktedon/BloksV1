@@ -1,0 +1,44 @@
+@(errorMessage: String)
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        @* Here's where we render the page title `String`. *@
+        <title>Bloks Social Media Site</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+        <link rel="stylesheet" media="screen" href="/assets/stylesheets/bootstrap(2).css">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+    </head>
+    <body>
+
+      <noscript>
+        This may have unexpected behavior with javascript disabled.
+      </noscript>
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand"><img src="@routes.Assets.versioned("images/method-draw-image-1.svg")" class="App-logo" alt="logo" style="width: 180px;"></a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarColor03">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item"><a class="nav-link active" href="/"><span class="visually-hidden">(Current)</span></a></li>
+                        <li class="nav-item"><a class="nav-link" href="/register">Logup</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/donate">Donate</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="card text-white bg-light" style="margin: 10vh;">
+            <div class="card-header">
+              <h2 style="color: rgb(131, 146, 189);">Something is Wrong</h2>
+              <div style="height: 1px; background-color: rgb(131, 146, 189);"></div>
+              <div class="card-body">
+                  <h4 style="color: black;">@errorMessage</h4>
+              </div>
+          </div>
+      </div>
+    </body>
+</html>

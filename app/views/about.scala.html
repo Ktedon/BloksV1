@@ -1,97 +1,99 @@
 @()
 
-@main("About eXul Bloks") {
 
-<nav class="navbar white navbar-color" style="box-shadow: 0px 5px 5px black;">
-    <a href="/" class="navbar-brand" style="color: black;">
-      <img src="@routes.Assets.versioned("images/method-draw-image-1.svg")" alt="Kiwi standing on oval" style="width: 180px;">
-    </a>
-    <input class="navbar-menu-target" type="checkbox" id="example-nav">
-    <label class="navbar-menu-toggle" for="example-nav"><span class="navbar-icon"></span></label>
-    <ul class="navbar-menu-items" >
-        <li>
-            <a href="/"><span style="color: black;">Home</span></a>
-        </li>
-        <li>
-            <a href="/register"><span style="color: black;">Register</span></a>
-        </li>
-        <li>
-            <a href="/donate"><span style="color: black;">Donate</span></a>
-        </li>
-    </ul>
-</nav>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        @* Here's where we render the page title `String`. *@
+        <title>Bloks Social Media Site</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+        <link rel="stylesheet" media="screen" href="/assets/stylesheets/bootstrap(2).css">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+    </head>
+    <body>
 
+      <noscript>
+        This may have unexpected behavior with javascript disabled.
+      </noscript>
 
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand"><img src="@routes.Assets.versioned("images/method-draw-image-1.svg")" class="App-logo" alt="logo" style="width: 180px;"></a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarColor03">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item"><a class="nav-link active" href="/"><span class="visually-hidden">(Current)</span></a></li>
+                        <li class="nav-item"><a class="nav-link" href="/register">Logup</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/donate">Donate</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-<div class="card" style="width: 60%; margin-left: 20%; margin-top: 50px;">
-    <div class="card-header">
-        <div class="card-header-title">
-            About eXul Bloks
-        </div>
-        <div class="card-header-icon">
-            ▼
-        </div>
-    </div>
-    <div class="card-content" style="overflow: scroll; height: 500px;">
-        <h1>About Bloks:</h1>
-        <br>
-        <p>
-            Bloks is social media site for the Essex-Westford School District. Bloks is a democratic, student run, and principled site designed to fulfill the needs of the students of the Essex-Westford School District and to protect student digital privacy and rights. Only students with a @@vt.ewsd.org school email can create an account, this is to protect students for foreign influence and to ensure that students can only create one account.
-        <br><br>
-        Bloks is developed and maintained by Bradly Ovitt will generous support and involvement from the EHS student council and the Bloks Government.</p>
-        <br><br>
-        <h1>Bloks Student Manifesto:</h1><br>
-        <p>
-          According to the Census Bureau, in Vermont, 9.8% of children live below the poverty line with those living
-          in poverty representing 33.4% of african american vermonters, 14.3% of asian american vermonters,
-          17.9% of latino vermonters, and 9.5% of caucasian vermonters. Similarly the percentage of disconnected
-           youth is at 8%. The teen birth rate is 8.8 per 1000. Health insurance only exists for 6.8% of the population.
-           The number of children living away from their parents is 11 per 1000. Hunger and food insecurity is at 9.6%.
-           <br><br>
-           We should not doubt that day by day, hour by hour, and minute by minute, each of these children in unfavorable
-           situations fade a bit more. In debates politicians talk about us, around us … on us. They use us as an issue while
-           we struggle and are already silently being forgotten. How are we supposed to save ourselves as ghastly virtual
-           human beings only capable of being represented by numbers and statistics?
-           <br><br>
-           As children we are forced to depend on adults and the conditions we are forced to live in are a reflection of
-           how we are treated and to what degree we are respected. We cannot thrive without understanding our own place,
-           unfortunately, our place is denuded, ravaged, and destroyed by one insult or another populist argument for war.
-           We must fight back to achieve palpable existence. We have to save ourselves from being columns of numbers and
-           percentages, bar graphs and bell curves. We must force our leaders to see, hear, smell, and fear us and all that
-           we stand for: Their own futures.
-           <br><br>
-           With all the activists and senators working on our behalf. They have failed us. Today’s children are faced with
-           global warming, cyber-security issues, mental health issues, under-funding of the educational system, social
-           inequities, etc. Current leaders are failing to meet our needs for all of these issues. In the start of our lives
-           and careers. We are facing a hypercompetitive market for employment and success which we have not been properly
-           prepared to succeed in. The reason for this is simple: We lack representation. In our world we are denied our unalienable
-           rights. We do not have the right to bear arms, We do not have the right to land, liberty, or property, we cannot vote,
-           we cannot learn to drive without permission, we cannot choose our classes without permission. And in this way, we do
-           not have the right to choose our future without permission. We are not given the rights designed to prevent government
-           abuses. Minor’s are America's secretly marginalized group. We are refused the freedoms to take care of ourselves and
-           refused the resources to be safe. We are at the complete mercy of our leaders.
-           <br><br>
-           Whenever politicians use us to make empty promises about a brighter future, it is not for us. It is never for us because
-           we have no power. It is for them. They pass us through these indoctrination facilities that tell us to believe in their
-           ideas, the very ideas that gave us the issues we face today. They refuse to give us the resources we need to be successful
-           and insist it is for our own good. I call BS.
-           <br><br>
-           They call us moody, irrational, and impulsive. They say we are incapable of making proper decisions for ourselves,
-           meanwhile they replace our future with an overfunded military industrial complex, extreme wealth inequality, and an
-           obesity epidemic. They beat us senseless then tell us that putting our hand up is an act of indecent defiance.
-           <br><br>
-           We should demand our rights. The rights we humans should always have been granted and the rights we were promised
-           in the declaration of independence. Bloks can give us a chance. More than a chance, a fight. It’s time we act. It’s
-           time we unite for a brighter future.
+        <div class="card text-white bg-light" style="margin: 10vh;">
+            <div class="card-header">
+	              <h2 style="color: rgb(131, 146, 189);">About</h2>
+	              <div style="height: 1px; background-color: rgb(131, 146, 189);"></div>
+	              <div class="card-body">
+                  <div style="color: black;">
+                    <br>
+                    <p>
+                      Bloks is social media site for the Essex-Westford School District. Bloks is a democratic, student run, and principled site designed to fulfill the needs of the students of the Essex-Westford School District and to protect student digital privacy and rights. Only students with a @@vt.ewsd.org school email can create an account, this is to protect students for foreign influence and to ensure that students can only create one account.
+                    </p>
+                    <br><br>
+                    Bloks is developed and maintained by Bradly Ovitt will generous support and involvement from the EHS student council and the Bloks Government.</p>
+                    <br>
+                    <h1>Bloks Student Manifesto:</h1><br>
+                    <p>
+                      According to the Census Bureau, in Vermont, 9.8% of children live below the poverty line with those living
+                      in poverty representing 33.4% of african american vermonters, 14.3% of asian american vermonters,
+                      17.9% of latino vermonters, and 9.5% of caucasian vermonters. Similarly the percentage of disconnected
+                       youth is at 8%. The teen birth rate is 8.8 per 1000. Health insurance only exists for 6.8% of the population.
+                       The number of children living away from their parents is 11 per 1000. Hunger and food insecurity is at 9.6%.
+                       <br><br>
+                       We should not doubt that day by day, hour by hour, and minute by minute, each of these children in unfavorable
+                       situations fade a bit more. In debates politicians talk about us, around us … on us. They use us as an issue while
+                       we struggle and are already silently being forgotten. How are we supposed to save ourselves as ghastly virtual
+                       human beings only capable of being represented by numbers and statistics?
+                       <br><br>
+                       As children we are forced to depend on adults and the conditions we are forced to live in are a reflection of
+                       how we are treated and to what degree we are respected. We cannot thrive without understanding our own place,
+                       unfortunately, our place is denuded, ravaged, and destroyed by one insult or another populist argument for war.
+                       We must fight back to achieve palpable existence. We have to save ourselves from being columns of numbers and
+                       percentages, bar graphs and bell curves. We must force our leaders to see, hear, smell, and fear us and all that
+                       we stand for: Their own futures.
+                       <br><br>
+                       With all the activists and senators working on our behalf. They have failed us. Today’s children are faced with
+                       global warming, cyber-security issues, mental health issues, under-funding of the educational system, social
+                       inequities, etc. Current leaders are failing to meet our needs for all of these issues. In the start of our lives
+                       and careers. We are facing a hypercompetitive market for employment and success which we have not been properly
+                       prepared to succeed in. The reason for this is simple: We lack representation. In our world we are denied our unalienable
+                       rights. We do not have the right to bear arms, We do not have the right to land, liberty, or property, we cannot vote,
+                       we cannot learn to drive without permission, we cannot choose our classes without permission. And in this way, we do
+                       not have the right to choose our future without permission. We are not given the rights designed to prevent government
+                       abuses. Minor’s are America's secretly marginalized group. We are refused the freedoms to take care of ourselves and
+                       refused the resources to be safe. We are at the complete mercy of our leaders.
+                       <br><br>
+                       Whenever politicians use us to make empty promises about a brighter future, it is not for us. It is never for us because
+                       we have no power. It is for them. They pass us through these indoctrination facilities that tell us to believe in their
+                       ideas, the very ideas that gave us the issues we face today. They refuse to give us the resources we need to be successful
+                       and insist it is for our own good. I call BS.
+                       <br><br>
+                       They call us moody, irrational, and impulsive. They say we are incapable of making proper decisions for ourselves,
+                       meanwhile they replace our future with an overfunded military industrial complex, extreme wealth inequality, and an
+                       obesity epidemic. They beat us senseless then tell us that putting our hand up is an act of indecent defiance.
+                       <br><br>
+                       We should demand our rights. The rights we humans should always have been granted and the rights we were promised
+                       in the declaration of independence. Bloks can give us a chance. More than a chance, a fight. It’s time we act. It’s
+                       time we unite for a brighter future.
 
-            <br><br>
-            <b>- Bradly Ovitt, General Secretary of the Blok Union
-            </b>
-
-        </p>
-    </div>
-</div>
-
-
-
-}
+                        <br><br>
+                        <b>- Bradly Ovitt, General Secretary of the Blok Union
+                      </p>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </body>
+</html>

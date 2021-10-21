@@ -36,43 +36,29 @@ class HomeController @Inject() (
 
   def home(name: String) = Action.async {
     implicit request: Request[AnyContent] =>
-      val email: Option[String] = request.session.get("email")
-      val password: Option[String] = request.session.get("password")
+    val email = (request.session get "email") getOrElse ""
+    val pwd = (request.session get "password") getOrElse ""
 
-      email match {
-        case Some(emailFound) =>
-          password match {
-            case Some(passwordFound) =>
-              userModel.validateUser(emailFound, passwordFound).flatMap {
-                _ match {
-                  case Some(userFound) =>
-                    notificationModel
-                      .getNotifications(userFound.id)
-                      .map { implicit notifs =>
-                        Ok(
-                          views.html.homeTemplate(
-                            userFound.name,
-                            userFound.id,
-                            HomeSearchForm.form
-                          )
-                        )
-                      }
-                  case None =>
-                    Future.successful(
-                      BadRequest("Something went wrong. Try again later.")
-                    )
-                }
-              }
-            case None =>
-              Future.successful(
-                BadRequest("Something went wrong. Try again later.")
+    userModel.validateUser(email, pwd).flatMap {
+      _ match {
+        case Some(userFound) =>
+          notificationModel
+            .getNotifications(userFound.id)
+            .map { implicit notifs =>
+              Ok(
+                views.html.homeTemplate(
+                  userFound.name,
+                  userFound.id,
+                  HomeSearchForm.form
+                )
               )
-          }
+            }
         case None =>
           Future.successful(
-            BadRequest("Something went wrong. Try again later.")
+            Redirect(routes.IndexController.index)
           )
       }
+    }
   }
 
 
@@ -84,52 +70,39 @@ class HomeController @Inject() (
           // binding failure, you retrieve the form containing errors:
           Future.successful(
             BadRequest(
-              "Something wen't wrong."
+              views.html.error(
+                ErrorMessages.formError
+              )
             )
           )
         },
         formData => {
 
-          val email: Option[String] = request.session.get("email")
-          val password: Option[String] = request.session.get("password")
+          val email = (request.session get "email") getOrElse ""
+          val pwd = (request.session get "password") getOrElse ""
 
-          email match {
-            case Some(emailFound) =>
-              password match {
-                case Some(passwordFound) =>
-                  userModel
-                    .validateUser(emailFound, passwordFound)
-                    .flatMap {
-                      _ match {
-                        case Some(userFound) =>
-                          homeModel
-                            .homeSearch(userFound.blokId, formData.query)
-                            .map { implicit searchResults =>
-                              Ok(
-                                views.html.homeSearchResults(
-                                  name,
-                                  userFound.id,
-                                  HomeSearchForm.form
-                                )
-                              )
-                            }
-                        case None =>
-                          Future.successful(
-                            BadRequest("Something went wrong. Try again later.")
-                          )
-                      }
-
+          userModel
+            .validateUser(email, pwd)
+            .flatMap {
+              _ match {
+                case Some(userFound) =>
+                  homeModel
+                    .homeSearch(userFound.blokId, formData.query)
+                    .map { implicit searchResults =>
+                      Ok(
+                        views.html.homeSearchResults(
+                          name,
+                          userFound.id,
+                          HomeSearchForm.form
+                        )
+                      )
                     }
                 case None =>
                   Future.successful(
-                    BadRequest("Something went wrong. Try again later.")
+                    Redirect(routes.IndexController.index)
                   )
               }
-            case None =>
-              Future.successful(
-                BadRequest("Something went wrong. Try again later.")
-              )
-          }
+            }
         }
       )
   }

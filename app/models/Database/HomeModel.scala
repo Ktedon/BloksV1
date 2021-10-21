@@ -7,7 +7,7 @@ import scala.concurrent.Future
 
 import models.helpers.EmailHelpers._
 import models.helpers.AuthHelpers._
-import models.PublicUser
+import models.Tables.BloksUserRow
 import models.Tables._
 
 class HomeModel(db: Database)(implicit ec: ExecutionContext) {
@@ -15,7 +15,7 @@ class HomeModel(db: Database)(implicit ec: ExecutionContext) {
   def homeSearch(
       blokId: Int,
       query: String
-  ): Future[Tuple2[Seq[BlokGroupRow], Seq[PublicUser]]] =
+  ): Future[Tuple2[Seq[BlokGroupRow], Seq[BloksUserRow]]] =
 
     if (SQL.injectionCheck(query))
       Future.successful((Seq.empty, Seq.empty))
@@ -34,7 +34,7 @@ class HomeModel(db: Database)(implicit ec: ExecutionContext) {
             _.name.toUpperCase.contains(query.toUpperCase)
           )
         ).map { users =>
-          Tuple2(bloks, PublicUser.publicUserApply(users))
+          Tuple2(bloks, users)
         }
       }
 }

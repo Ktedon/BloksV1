@@ -132,24 +132,20 @@ trait Tables {
    *  @param password Database column password SqlType(varchar), Length(100,true)
    *  @param grade Database column grade SqlType(int4)
    *  @param relationshipStatus Database column relationship_status SqlType(varchar), Length(100,true)
-   *  @param gender Database column gender SqlType(varchar), Length(50,true)
-   *  @param showGender Database column show_gender SqlType(bool)
-   *  @param biologicalSex Database column biological_sex SqlType(varchar), Length(50,true)
-   *  @param showBiologicalSex Database column show_biological_sex SqlType(bool)
    *  @param biography Database column biography SqlType(varchar), Length(1000,true)
-   *  @param dateOfRegistration Database column date_of_registration SqlType(date)
+   *  @param dateOfBirth Database column date_of_birth SqlType(varchar), Length(15,true)
    *  @param profilePic Database column profile_pic SqlType(varchar), Length(650,true) */
-  case class BloksUserRow(id: Int, blokId: Int, isValidated: Boolean, name: String, email: String, electedRank: Short, password: String, grade: Int, relationshipStatus: String, gender: String, showGender: Boolean, biologicalSex: String, showBiologicalSex: Boolean, biography: String, dateOfRegistration: java.sql.Date, profilePic: String)
+  case class BloksUserRow(id: Int, blokId: Int, isValidated: Boolean, name: String, email: String, electedRank: Short, password: String, grade: Int, relationshipStatus: String, biography: String, dateOfBirth: String, profilePic: String)
   /** GetResult implicit for fetching BloksUserRow objects using plain SQL queries */
-  implicit def GetResultBloksUserRow(implicit e0: GR[Int], e1: GR[Boolean], e2: GR[String], e3: GR[Short], e4: GR[java.sql.Date]): GR[BloksUserRow] = GR{
+  implicit def GetResultBloksUserRow(implicit e0: GR[Int], e1: GR[Boolean], e2: GR[String], e3: GR[Short]): GR[BloksUserRow] = GR{
     prs => import prs._
-    BloksUserRow.tupled((<<[Int], <<[Int], <<[Boolean], <<[String], <<[String], <<[Short], <<[String], <<[Int], <<[String], <<[String], <<[Boolean], <<[String], <<[Boolean], <<[String], <<[java.sql.Date], <<[String]))
+    BloksUserRow.tupled((<<[Int], <<[Int], <<[Boolean], <<[String], <<[String], <<[Short], <<[String], <<[Int], <<[String], <<[String], <<[String], <<[String]))
   }
   /** Table description of table bloks_user. Objects of this class serve as prototypes for rows in queries. */
   class BloksUser(_tableTag: Tag) extends profile.api.Table[BloksUserRow](_tableTag, "bloks_user") {
-    def * = (id, blokId, isValidated, name, email, electedRank, password, grade, relationshipStatus, gender, showGender, biologicalSex, showBiologicalSex, biography, dateOfRegistration, profilePic) <> (BloksUserRow.tupled, BloksUserRow.unapply)
+    def * = (id, blokId, isValidated, name, email, electedRank, password, grade, relationshipStatus, biography, dateOfBirth, profilePic) <> (BloksUserRow.tupled, BloksUserRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(id), Rep.Some(blokId), Rep.Some(isValidated), Rep.Some(name), Rep.Some(email), Rep.Some(electedRank), Rep.Some(password), Rep.Some(grade), Rep.Some(relationshipStatus), Rep.Some(gender), Rep.Some(showGender), Rep.Some(biologicalSex), Rep.Some(showBiologicalSex), Rep.Some(biography), Rep.Some(dateOfRegistration), Rep.Some(profilePic))).shaped.<>({r=>import r._; _1.map(_=> BloksUserRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get, _11.get, _12.get, _13.get, _14.get, _15.get, _16.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(id), Rep.Some(blokId), Rep.Some(isValidated), Rep.Some(name), Rep.Some(email), Rep.Some(electedRank), Rep.Some(password), Rep.Some(grade), Rep.Some(relationshipStatus), Rep.Some(biography), Rep.Some(dateOfBirth), Rep.Some(profilePic))).shaped.<>({r=>import r._; _1.map(_=> BloksUserRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get, _11.get, _12.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(serial), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
@@ -169,18 +165,10 @@ trait Tables {
     val grade: Rep[Int] = column[Int]("grade")
     /** Database column relationship_status SqlType(varchar), Length(100,true) */
     val relationshipStatus: Rep[String] = column[String]("relationship_status", O.Length(100,varying=true))
-    /** Database column gender SqlType(varchar), Length(50,true) */
-    val gender: Rep[String] = column[String]("gender", O.Length(50,varying=true))
-    /** Database column show_gender SqlType(bool) */
-    val showGender: Rep[Boolean] = column[Boolean]("show_gender")
-    /** Database column biological_sex SqlType(varchar), Length(50,true) */
-    val biologicalSex: Rep[String] = column[String]("biological_sex", O.Length(50,varying=true))
-    /** Database column show_biological_sex SqlType(bool) */
-    val showBiologicalSex: Rep[Boolean] = column[Boolean]("show_biological_sex")
     /** Database column biography SqlType(varchar), Length(1000,true) */
     val biography: Rep[String] = column[String]("biography", O.Length(1000,varying=true))
-    /** Database column date_of_registration SqlType(date) */
-    val dateOfRegistration: Rep[java.sql.Date] = column[java.sql.Date]("date_of_registration")
+    /** Database column date_of_birth SqlType(varchar), Length(15,true) */
+    val dateOfBirth: Rep[String] = column[String]("date_of_birth", O.Length(15,varying=true))
     /** Database column profile_pic SqlType(varchar), Length(650,true) */
     val profilePic: Rep[String] = column[String]("profile_pic", O.Length(650,varying=true))
   }

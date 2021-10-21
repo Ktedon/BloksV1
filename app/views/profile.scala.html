@@ -1,4 +1,4 @@
-@(name: String)(implicit request: RequestHeader, user: models.PublicUser)
+@(name: String)(implicit request: RequestHeader, user: models.Tables.BloksUserRow)
 
 @main("Welcome to Bloks") {
 
@@ -48,7 +48,7 @@
                     </h5>
                     <br>
                     <h5 class="container">
-                        Gender: @user.gender
+                        Rank: @user.electedRank
                     </h5>
                 </div>
             </div>
@@ -65,7 +65,7 @@
                     </h5>
                     <br>
                     <h5 class="container">
-                        Sex: @user.biologicalSex
+                        DOB: @user.dateOfBirth
                     </h5>
                 </div>
 

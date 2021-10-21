@@ -36,53 +36,28 @@ class GroupController @Inject() (
 
   def groups(name: String) = Action.async {
     implicit request: Request[AnyContent] =>
-      val email: Option[String] = request.session.get("email")
-      val password: Option[String] = request.session.get("password")
+      val email = (request.session get "email") getOrElse ""
+      val pwd = (request.session get "password") getOrElse ""
 
-      email match {
-        case Some(emailFound) =>
-          password match {
-            case Some(passwordFound) =>
-              userModel.validateUser(emailFound, passwordFound).flatMap {
-                _ match {
-                  case Some(userFound) =>
-                    groupModel.getGroups(userFound.blokId).flatMap {
-                      implicit groups =>
-                        userModel.validateUser(emailFound, passwordFound)
-                          .map {
-                            _.headOption match {
-                              case Some(userFound) =>
-                                Ok(
-                                  views.html
-                                    .group(
-                                      name,
-                                      userFound.id,
-                                      GroupSearchForm.form,
-                                      GroupCreateForm.form
-                                    )
-                                )
-                              case None =>
-                                BadRequest(
-                                  "Something went wrong. Try again later."
-                                )
-                            }
-                          }
-                    }
-                  case None =>
-                    Future.successful(
-                      BadRequest("Something went wrong. Try again later.")
-                    )
-                }
-              }
-            case None =>
-              Future.successful(
-                BadRequest("Something went wrong. Try again later.")
+      userModel.validateUser(email, pwd).flatMap {
+        _ match {
+          case Some(userFound) =>
+            groupModel.getGroups(userFound.blokId).map { implicit groups =>
+              Ok(
+                views.html.group(
+                    name,
+                    userFound.id,
+                    GroupSearchForm.form,
+                    GroupCreateForm.form
+                  )
               )
-          }
-        case None =>
-          Future.successful(
-            BadRequest("Something went wrong. Try again later.")
-          )
+            }
+
+          case None =>
+            Future.successful(
+              Redirect(routes.IndexController.index)
+            )
+        }
       }
   }
 
@@ -93,100 +68,74 @@ class GroupController @Inject() (
           // binding failure, you retrieve the form containing errors:
           Future.successful(
             BadRequest(
-              "Something wen't wrong."
+              views.html.error(
+                ErrorMessages.formError
+              )
             )
           )
         },
         formData => {
 
-          val email: Option[String] = request.session.get("email")
-          val password: Option[String] = request.session.get("password")
+          val email = (request.session get "email") getOrElse ""
+          val pwd = (request.session get "password") getOrElse ""
 
-          email match {
-            case Some(emailFound) =>
-              password match {
-                case Some(passwordFound) =>
-                  userModel
-                    .validateUser(emailFound, passwordFound)
-                    .flatMap {
-                      _ match {
-                        case Some(userFound) =>
-                          groupModel
-                            .createGroup(
-                              userFound.blokId,
-                              formData.name,
-                              formData.`type`.toShort
-                            )
-                            .map { bool =>
-                              if (bool)
-                                Redirect(routes.GroupController.groups(name))
-                              else
-                                BadRequest(
-                                  "Whoops. Something wen't wrong and by that I mean you wen't wrong"
-                                )
-                            }
-
-                        case None =>
-                          Future.successful(
-                            BadRequest("Something went wrong. Try again later.")
-                          )
-                      }
+          userModel
+            .validateUser(email, pwd)
+            .flatMap {
+              _ match {
+                case Some(userFound) =>
+                  groupModel
+                    .createGroup(
+                      userFound.blokId,
+                      formData.name,
+                      formData.`type`.toShort
+                    )
+                    .map { bool =>
+                      if (bool)
+                        Redirect(routes.GroupController.groups(name))
+                      else
+                        BadRequest(
+                          "Whoops. Something wen't wrong and by that I mean you wen't wrong"
+                        )
                     }
+
                 case None =>
                   Future.successful(
-                    BadRequest("Something went wrong. Try again later.")
+                    Redirect(routes.IndexController.index)
                   )
               }
-            case None =>
-              Future.successful(
-                BadRequest("Something went wrong. Try again later.")
-              )
-          }
+            }
         }
       )
   }
 
   def group(name: String, groupId: Int) = Action.async {
     implicit request: Request[AnyContent] =>
-      val email: Option[String] = request.session.get("email")
-      val password: Option[String] = request.session.get("password")
+      val email = (request.session get "email") getOrElse ""
+      val pwd = (request.session get "password") getOrElse ""
 
-      email match {
-        case Some(emailFound) =>
-          password match {
-            case Some(passwordFound) =>
-              userModel.validateUser(emailFound, passwordFound).flatMap {
-                _.headOption match {
-                  case Some(userFound) =>
-                    groupModel
-                      .getGroup(groupId)
-                      .flatMap { groups =>
-                        groups.headOption match {
-                          case Some(groupFound) =>
-                            groupModel.getThreadsAndUsers(groupId).map { implicit threadsAndUsers =>
-                              Ok(views.html.groupTemplate(GroupSearchForm.form, ThreadCreateForm.form, models.PublicUser.publicUserApply(userFound), models.PublicGroup.publicGroupApply(groupFound)))
-                            }
-                          case None             =>
-                            Future.successful(
-                              BadRequest("Something went wrong. Try again later.4")
-                            )
-                        }
-                      }
-                  case None =>
+      userModel.validateUser(email, pwd).flatMap {
+        _.headOption match {
+          case Some(userFound) =>
+            groupModel
+              .getGroup(groupId)
+              .flatMap { groups =>
+                groups.headOption match {
+                  case Some(groupFound) =>
+                    groupModel.getThreadsAndUsers(groupId).map { implicit threadsAndUsers =>
+                      Ok(views.html.groupTemplate(GroupSearchForm.form, ThreadCreateForm.form, userFound, groupFound))
+                    }
+                  case None             =>
                     Future.successful(
-                      BadRequest("Something went wrong. Try again later.3")
+                      BadRequest("Something went wrong. Try again later.4")
                     )
                 }
               }
-            case None =>
-              Future.successful(
-                BadRequest("Something went wrong. Try again later.2")
-              )
-          }
-        case None =>
-          Future.successful(
-            BadRequest("Something went wrong. Try again later.1")
-          )
+          case None =>
+            Future.successful(
+              Redirect(routes.IndexController.index)
+            )
+        }
       }
   }
 
@@ -198,70 +147,67 @@ class GroupController @Inject() (
           println("y")
           Future.successful(
             BadRequest(
-              "Something wen't wrong."
+              views.html.error(
+                ErrorMessages.formError
+              )
             )
           )
         },
         formData => {
 
-          val email: Option[String] = request.session.get("email")
-          val password: Option[String] = request.session.get("password")
+          val email = (request.session get "email") getOrElse ""
+          val pwd = (request.session get "password") getOrElse ""
 
-          email match {
-            case Some(emailFound) =>
-              password match {
-                case Some(passwordFound) =>
-                  userModel
-                    .validateUser(emailFound, passwordFound)
-                    .flatMap {
-                      _ match {
-                        case Some(userFound) =>
-                          groupModel.getGroups(userFound.blokId).flatMap {
-                            _.filter(group =>
-                              group.name == groupName
-                            ).headOption match {
-                              case Some(found) =>
-                                groupModel
-                                  .addGroupThread(
-                                    found.id,
-                                    formData.parentID.toInt,
-                                    formData.title,
-                                    formData.text,
-                                    userFound.id
-                                  )
-                                  .flatMap { wasCreated =>
-                                    if (wasCreated)
-                                      Future.successful(
-                                        Redirect(
-                                          routes.GroupController.group(name, found.id)
-                                        )
-                                      )
-                                    else
-                                      Future.successful(BadRequest("Nah"))
-                                  }
-
-                              case None =>
-                                Future.successful(BadRequest("Bummer"))
-                            }
-
-                          }
-                        case None =>
-                          Future.successful(
-                            BadRequest("Something went wrong. Try again later.")
+          userModel
+            .validateUser(email, pwd)
+            .flatMap {
+              _ match {
+                case Some(userFound) =>
+                  groupModel.getGroups(userFound.blokId).flatMap {
+                    _.filter(group =>
+                      group.name == groupName
+                    ).headOption match {
+                      case Some(found) =>
+                        groupModel
+                          .addGroupThread(
+                            found.id,
+                            formData.parentID.toInt,
+                            formData.title,
+                            formData.text,
+                            userFound.id
                           )
-                      }
-
+                          .flatMap { wasCreated =>
+                            if (wasCreated)
+                              Future.successful(
+                                Redirect(
+                                  routes.GroupController.group(name, found.id)
+                                )
+                              )
+                            else
+                              Future.successful(
+                                BadRequest(
+                                  views.html.error(
+                                    "Something went wrong creating your post"
+                                  )
+                                )
+                              )
+                          }
+                      case None =>
+                        Future.successful(
+                          BadRequest(
+                            views.html.error(
+                              "Something wen't"
+                            )
+                          )
+                        )
                     }
+                  }
                 case None =>
                   Future.successful(
-                    BadRequest("Something went wrong. Try again later.")
+                    Redirect(routes.IndexController.index)
                   )
               }
-            case None =>
-              Future.successful(
-                BadRequest("Something went wrong. Try again later.")
-              )
-          }
+            }
         }
       )
     }
@@ -273,52 +219,40 @@ class GroupController @Inject() (
             // binding failure, you retrieve the form containing errors:
             Future.successful(
               BadRequest(
-                "Something wen't wrong."
+                views.html.error(
+                  ErrorMessages.formError
+                )
               )
             )
           },
           formData => {
 
-            val email: Option[String] = request.session.get("email")
-            val password: Option[String] = request.session.get("password")
+            val email = (request.session get "email") getOrElse ""
+            val pwd = (request.session get "password") getOrElse ""
 
-            email match {
-              case Some(emailFound) =>
-                password match {
-                  case Some(passwordFound) =>
-                    userModel
-                      .validateUser(emailFound, passwordFound)
-                      .flatMap {
-                        _.headOption match {
-                          case Some(userFound) =>
-                            homeModel
-                              .homeSearch(userFound.blokId, formData.query)
-                              .map { implicit searchResults =>
-                                Ok(
-                                  views.html
-                                    .groupSearchResults(
-                                      name,
-                                      userFound.id,
-                                      GroupSearchForm.form
-                                    )
-                                )
-                              }
-                          case None =>
-                            Future.successful(
-                              BadRequest("Something went wrong. Try again later.")
+            userModel
+              .validateUser(email, pwd)
+              .flatMap {
+                _.headOption match {
+                  case Some(userFound) =>
+                    homeModel
+                      .homeSearch(userFound.blokId, formData.query)
+                      .map { implicit searchResults =>
+                        Ok(
+                          views.html
+                            .groupSearchResults(
+                              name,
+                              userFound.id,
+                              GroupSearchForm.form
                             )
-                        }
+                        )
                       }
                   case None =>
                     Future.successful(
-                      BadRequest("Something went wrong. Try again later.")
+                      Redirect(routes.IndexController.index)
                     )
                 }
-              case None =>
-                Future.successful(
-                  BadRequest("Something went wrong. Try again later.")
-                )
-            }
+              }
           }
         )
     }

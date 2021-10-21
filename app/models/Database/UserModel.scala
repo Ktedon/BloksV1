@@ -8,7 +8,7 @@ import scala.concurrent.Future
 
 import models.helpers.EmailHelpers._
 import models.helpers.AuthHelpers._
-import models.PublicUser
+import models.Tables.BloksUserRow
 import models.Tables._
 
 class UserModel(db: Database)(implicit ec: ExecutionContext) {
@@ -60,9 +60,23 @@ class UserModel(db: Database)(implicit ec: ExecutionContext) {
         }
       }
 
+  def validateEmail(email: String): Future[Int] =
+    db.run(BloksUser.filter(user => user.email === email && user.isValidated === true).result).flatMap { userSeq =>
+      if (userSeq.isEmpty)
+        db.run(BloksUser.filter(_.email === email).result).map { userSeq2 =>
+          if (userSeq2.isEmpty)
+            -1
+          else
+            1
+        }
+      else
+        Future.successful(0)
+    }
+
   def validateUserByID(Id: Int): Future[Option[BloksUserRow]] =
     db.run(BloksUser.filter(userS => userS.id === Id).result)
       .map {
+
         _.headOption match {
           case Some(userFound) =>
             if (userFound.isValidated)
@@ -82,8 +96,6 @@ class UserModel(db: Database)(implicit ec: ExecutionContext) {
         data.name,
         data.email,
         data.relStatus,
-        data.gender,
-        data.biologicalSex,
         data.biography,
         data.password
       ) /*|| (getEmailExtension(data.email) != "vt.ewsd.org")*/
@@ -104,12 +116,8 @@ class UserModel(db: Database)(implicit ec: ExecutionContext) {
                 Blake3.hex(data.password, 64),
                 data.grade.toInt,
                 data.relStatus,
-                data.gender,
-                data.showGender,
-                data.biologicalSex,
-                data.showBiologicalSex,
                 data.biography,
-                new java.sql.Date(System.currentTimeMillis()),
+                new java.sql.Date(System.currentTimeMillis()).toString,
                 s"https://avatars.dicebear.com/api/jdenticon/${scala.util.Random.nextInt}.svg"
               )
             ).map(_ > 0).flatMap { wasCreated =>

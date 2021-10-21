@@ -52,53 +52,53 @@ class SettingModel(db: Database)(implicit ec: ExecutionContext) {
       .map(_ > 0)
   }
 
-  def changeGender(userId: Int, newGender: String): Future[Boolean] =
-    if (SQL.injectionCheck(newGender))
-      Future.successful(false)
-    else
-      db.run(
-        (
-          for {
-            user <- BloksUser if user.id === userId
-          } yield user.gender
-        ).update(newGender)
-      ).map(_ > 0)
+  // def changeGender(userId: Int, newGender: String): Future[Boolean] =
+  //   if (SQL.injectionCheck(newGender))
+  //     Future.successful(false)
+  //   else
+  //     db.run(
+  //       (
+  //         for {
+  //           user <- BloksUser if user.id === userId
+  //         } yield user.gender
+  //       ).update(newGender)
+  //     ).map(_ > 0)
 
-  def changeGenderVisibility(
-      userId: Int,
-      newVisibility: Boolean
-  ): Future[Boolean] =
-    db.run(
-      (
-        for {
-          user <- BloksUser if user.id === userId
-        } yield user.showGender
-      ).update(newVisibility)
-    ).map(_ > 0)
+  // def changeGenderVisibility(
+  //     userId: Int,
+  //     newVisibility: Boolean
+  // ): Future[Boolean] =
+  //   db.run(
+  //     (
+  //       for {
+  //         user <- BloksUser if user.id === userId
+  //       } yield user.showGender
+  //     ).update(newVisibility)
+  //   ).map(_ > 0)
 
-  def changeSex(userId: Int, newSex: String): Future[Boolean] =
-    if (SQL.injectionCheck(newSex))
-      Future.successful(false)
-    else
-      db.run(
-        (
-          for {
-            user <- BloksUser if user.id === userId
-          } yield user.biologicalSex
-        ).update(newSex)
-      ).map(_ > 0)
+  // def changeSex(userId: Int, newSex: String): Future[Boolean] =
+  //   if (SQL.injectionCheck(newSex))
+  //     Future.successful(false)
+  //   else
+  //     db.run(
+  //       (
+  //         for {
+  //           user <- BloksUser if user.id === userId
+  //         } yield user.biologicalSex
+  //       ).update(newSex)
+  //     ).map(_ > 0)
 
-  def changeSexVisibility(
-      userId: Int,
-      newVisibility: Boolean
-  ): Future[Boolean] =
-    db.run(
-      (
-        for {
-          user <- BloksUser if user.id === userId
-        } yield user.showBiologicalSex
-      ).update(newVisibility)
-    ).map(_ > 0)
+  // def changeSexVisibility(
+  //     userId: Int,
+  //     newVisibility: Boolean
+  // ): Future[Boolean] =
+  //   db.run(
+  //     (
+  //       for {
+  //         user <- BloksUser if user.id === userId
+  //       } yield user.showBiologicalSex
+  //     ).update(newVisibility)
+  //   ).map(_ > 0)
 
   def changeGrade(userId: Int, newGrade: Int): Future[Boolean] =
     db.run(

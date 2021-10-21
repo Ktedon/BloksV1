@@ -30,25 +30,17 @@ GET     /about                        controllers.IndexController.about()
 GET     /donate                       controllers.IndexController.index()
 
 GET     /register                     controllers.IndexController.register()
-POST    /registerPost                 controllers.IndexController.registerPost()
+POST    /register                     controllers.IndexController.registerPost()
 
 GET     /emailValidateUser/:key       controllers.IndexController.changeEmailValidation(key: String)
 POST    /emailValidateUserPost/:key   controllers.IndexController.changeEmailValidationPost(key: String)
 
-GET     /darnit-I-forgot-my-passcode  controllers.IndexController.darnitIForgotMyPasscode()
+GET     /forgottenPassword            controllers.IndexController.forgottenPassword()
+POST    /recoverAccount               controllers.IndexController.recoverAccount()
 
 GET     /home/:name/settings          controllers.SettingController.settings(name: String)
 POST    /home/changeIcon              controllers.SettingController.changeIconPost()
 POST    /home/deleteAccount           controllers.SettingController.deleteAccountPost
-POST    /home/changeGender            controllers.SettingController.changeGenderPost
-POST    /home/changeGenderVisibility  controllers.SettingController.changeGenderVisibilityPost
-
-
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Data API
-
-POST /validateUser                     controllers.IndexController.validateUser
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

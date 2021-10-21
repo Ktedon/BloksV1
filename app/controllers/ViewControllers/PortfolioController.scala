@@ -52,8 +52,7 @@ class PortfolioController @Inject() (
                           Ok(
                             views.html.profile(profileUserFound.name)(
                               request,
-                              models.PublicUser
-                                .publicUserApply(profileUserFound)
+                              profileUserFound
                             )
                           )
                         case None =>
@@ -61,17 +60,19 @@ class PortfolioController @Inject() (
                       }
                     }
                   case None =>
-                    Future.successful(BadRequest("Something wen't wrong."))
+                    Future.successful(
+                      Redirect(routes.IndexController.index)
+                    )
                 }
               }
             case None =>
               Future.successful(
-                BadRequest("Something went wrong. Try again later.")
+                Redirect(routes.IndexController.index)
               )
           }
         case None =>
           Future.successful(
-            BadRequest("Something went wrong. Try again later.")
+            Redirect(routes.IndexController.index)
           )
       }
   }
@@ -96,14 +97,19 @@ class PortfolioController @Inject() (
                       pokeId
                     )
                     Redirect(routes.PortfolioController.portfolio(userFound.id))
-                  case None => BadRequest("Something wen't wrong.")
+                  case None =>
+                    Redirect(routes.IndexController.index)
                 }
               }
             case None =>
-              Future.successful(BadRequest("Something wen't wrong."))
+              Future.successful(
+                Redirect(routes.IndexController.index)
+              )
           }
         case None =>
-          Future.successful(BadRequest("Something wen't wrong."))
+          Future.successful(
+            Redirect(routes.IndexController.index)
+          )
       }
   }
 

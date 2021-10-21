@@ -47,12 +47,19 @@ class SettingController @Inject() (
                 _.headOption match {
                   case Some(userFound) =>
                     Ok(views.html.settings(name, userFound.id))
-                  case None => BadRequest("Something wen't Wrong")
+                  case None =>
+                    Redirect(routes.IndexController.index)
                 }
               }
-            case None => Future.successful(BadRequest("Something wen't Wrong"))
+            case None =>
+              Future.successful(
+                Redirect(routes.IndexController.index)
+              )
           }
-        case None => Future.successful(BadRequest("Something wen't Wrong"))
+        case None =>
+          Future.successful(
+            Redirect(routes.IndexController.index)
+          )
       }
   }
 
@@ -61,7 +68,9 @@ class SettingController @Inject() (
       formWithErrors => {
         Future.successful(
           BadRequest(
-            "Something wen't wrong."
+            views.html.error(
+              ErrorMessages.formError
+            )
           )
         )
       },
@@ -92,13 +101,20 @@ class SettingController @Inject() (
                               )
                           }
                       case None =>
-                        Future.successful(BadRequest("Something wen't Wrong"))
+                        Future.successful(
+                          Redirect(routes.IndexController.index)
+                        )
                     }
                   }
               case None =>
-                Future.successful(BadRequest("Something wen't Wrong"))
+                Future.successful(
+                  Redirect(routes.IndexController.index)
+                )
             }
-          case None => Future.successful(BadRequest("Something wen't Wrong"))
+          case None =>
+            Future.successful(
+              Redirect(routes.IndexController.index)
+            )
         }
       }
     )
@@ -110,7 +126,9 @@ class SettingController @Inject() (
         formWithErrors => {
           Future.successful(
             BadRequest(
-              "Something wen't wrong."
+              views.html.error(
+                ErrorMessages.formError
+              )
             )
           )
         },
@@ -136,13 +154,20 @@ class SettingController @Inject() (
                                 BadRequest("Something wen't Wrong")
                             }
                         case None =>
-                          Future.successful(BadRequest("Something wen't Wrong"))
+                          Future.successful(
+                            Redirect(routes.IndexController.index)
+                          )
                       }
                     }
                 case None =>
-                  Future.successful(BadRequest("Something wen't Wrong"))
+                  Future.successful(
+                    Redirect(routes.IndexController.index)
+                  )
               }
-            case None => Future.successful(BadRequest("Something wen't Wrong"))
+            case None =>
+              Future.successful(
+                Redirect(routes.IndexController.index)
+              )
           }
         }
       )
@@ -168,164 +193,20 @@ class SettingController @Inject() (
                           BadRequest("Something wen't Wrong")
                     }
                   case None =>
-                    Future.successful(BadRequest("Something wen't Wrong"))
+                    Future.successful(
+                      Redirect(routes.IndexController.index)
+                    )
                 }
               }
-            case None => Future.successful(BadRequest("Something wen't Wrong"))
+            case None =>
+              Future.successful(
+                Redirect(routes.IndexController.index)
+              )
           }
-        case None => Future.successful(BadRequest("Something wen't Wrong"))
-      }
-  }
-
-  def changeGenderPost = Action.async { implicit request: Request[AnyContent] =>
-    ChangeGenderForm.form.bindFromRequest.fold(
-      formWithErrors => {
-        Future.successful(
-          BadRequest(
-            "Something wen't wrong."
+        case None =>
+          Future.successful(
+            Redirect(routes.IndexController.index)
           )
-        )
-      },
-      formData => {
-        val email: Option[String] = request.session.get("email")
-        val password: Option[String] = request.session.get("password")
-
-        email match {
-          case Some(emailFound) =>
-            password match {
-              case Some(passwordFound) =>
-                userModel
-                  .validateUser(emailFound, passwordFound)
-                  .flatMap {
-                    _.headOption match {
-                      case Some(userFound) =>
-                        settingModel
-                          .changeGender(userFound.id, formData.newGender)
-                          .map { hasChanged =>
-                            if (hasChanged)
-                              Ok(views.html.settings("name", userFound.id))
-                            else
-                              BadRequest("Something wen't Wrong")
-                          }
-                      case None =>
-                        Future.successful(BadRequest("Something wen't Wrong"))
-                    }
-                  }
-              case None =>
-                Future.successful(BadRequest("Something wen't Wrong"))
-            }
-          case None => Future.successful(BadRequest("Something wen't Wrong"))
-        }
-      }
-    )
-  }
-
-  def changeGenderVisibilityPost = Action.async {
-    implicit request: Request[AnyContent] =>
-      val email: Option[String] = request.session.get("email")
-      val password: Option[String] = request.session.get("password")
-
-      email match {
-        case Some(emailFound) =>
-          password match {
-            case Some(passwordFound) =>
-              userModel.validateUser(emailFound, passwordFound).flatMap {
-                _.headOption match {
-                  case Some(userFound) =>
-                    settingModel
-                      .changeGenderVisibility(
-                        userFound.id,
-                        !userFound.showGender
-                      )
-                      .map { hasChanged =>
-                        if (hasChanged)
-                          Ok(views.html.settings("name", userFound.id))
-                        else
-                          BadRequest("Something wen't Wrong")
-                      }
-                  case None =>
-                    Future.successful(BadRequest("Something wen't Wrong"))
-                }
-              }
-            case None => Future.successful(BadRequest("Something wen't Wrong"))
-          }
-        case None => Future.successful(BadRequest("Something wen't Wrong"))
-      }
-  }
-
-  def changeSexPost = Action.async { implicit request: Request[AnyContent] =>
-    ChangeSexForm.form.bindFromRequest.fold(
-      formWithErrors => {
-        Future.successful(
-          BadRequest(
-            "Something wen't wrong."
-          )
-        )
-      },
-      formData => {
-        val email: Option[String] = request.session.get("email")
-        val password: Option[String] = request.session.get("password")
-
-        email match {
-          case Some(emailFound) =>
-            password match {
-              case Some(passwordFound) =>
-                userModel
-                  .validateUser(emailFound, passwordFound)
-                  .flatMap {
-                    _.headOption match {
-                      case Some(userFound) =>
-                        settingModel
-                          .changeSex(userFound.id, formData.newSex)
-                          .map { hasChanged =>
-                            if (hasChanged)
-                              Ok(views.html.settings("name", userFound.id))
-                            else
-                              BadRequest("Something wen't Wrong")
-                          }
-                      case None =>
-                        Future.successful(BadRequest("Something wen't Wrong"))
-                    }
-                  }
-              case None =>
-                Future.successful(BadRequest("Something wen't Wrong"))
-            }
-          case None => Future.successful(BadRequest("Something wen't Wrong"))
-        }
-      }
-    )
-  }
-
-  def changeSexVisibilityPost = Action.async {
-    implicit request: Request[AnyContent] =>
-      val email: Option[String] = request.session.get("email")
-      val password: Option[String] = request.session.get("password")
-
-      email match {
-        case Some(emailFound) =>
-          password match {
-            case Some(passwordFound) =>
-              userModel.validateUser(emailFound, passwordFound).flatMap {
-                _.headOption match {
-                  case Some(userFound) =>
-                    settingModel
-                      .changeSexVisibility(
-                        userFound.id,
-                        !userFound.showBiologicalSex
-                      )
-                      .map { hasChanged =>
-                        if (hasChanged)
-                          Ok(views.html.settings("name", userFound.id))
-                        else
-                          BadRequest("Something wen't Wrong")
-                      }
-                  case None =>
-                    Future.successful(BadRequest("Something wen't Wrong"))
-                }
-              }
-            case None => Future.successful(BadRequest("Something wen't Wrong"))
-          }
-        case None => Future.successful(BadRequest("Something wen't Wrong"))
       }
   }
 
@@ -334,7 +215,9 @@ class SettingController @Inject() (
       formWithErrors => {
         Future.successful(
           BadRequest(
-            "Something wen't wrong."
+            views.html.error(
+              ErrorMessages.formError
+            )
           )
         )
       },
@@ -360,13 +243,20 @@ class SettingController @Inject() (
                               BadRequest("Something wen't Wrong")
                           }
                       case None =>
-                        Future.successful(BadRequest("Something wen't Wrong"))
+                        Future.successful(
+                          Redirect(routes.IndexController.index)
+                        )
                     }
                   }
               case None =>
-                Future.successful(BadRequest("Something wen't Wrong"))
+                Future.successful(
+                  Redirect(routes.IndexController.index)
+                )
             }
-          case None => Future.successful(BadRequest("Something wen't Wrong"))
+          case None =>
+            Future.successful(
+              Redirect(routes.IndexController.index)
+            )
         }
       }
     )
@@ -378,7 +268,9 @@ class SettingController @Inject() (
         formWithErrors => {
           Future.successful(
             BadRequest(
-              "Something wen't wrong."
+              views.html.error(
+                ErrorMessages.formError
+              )
             )
           )
         },
@@ -404,13 +296,20 @@ class SettingController @Inject() (
                                 BadRequest("Something wen't Wrong")
                             }
                         case None =>
-                          Future.successful(BadRequest("Something wen't Wrong"))
+                          Future.successful(
+                            Redirect(routes.IndexController.index)
+                          )
                       }
                     }
                 case None =>
-                  Future.successful(BadRequest("Something wen't Wrong"))
+                  Future.successful(
+                    Redirect(routes.IndexController.index)
+                  )
               }
-            case None => Future.successful(BadRequest("Something wen't Wrong"))
+            case None =>
+              Future.successful(
+                Redirect(routes.IndexController.index)
+              )
           }
         }
       )
@@ -421,7 +320,9 @@ class SettingController @Inject() (
       formWithErrors => {
         Future.successful(
           BadRequest(
-            "Something wen't wrong."
+            views.html.error(
+              ErrorMessages.formError
+            )
           )
         )
       },
@@ -447,13 +348,19 @@ class SettingController @Inject() (
                               BadRequest("Something wen't Wrong")
                           }
                       case None =>
-                        Future.successful(BadRequest("Something wen't Wrong"))
+                        Future.successful(
+                          Redirect(routes.IndexController.index)
+                        )
                     }
                   }
               case None =>
-                Future.successful(BadRequest("Something wen't Wrong"))
+                Future.successful(
+                  Redirect(routes.IndexController.index)
+                )
             }
-          case None => Future.successful(BadRequest("Something wen't Wrong"))
+          case None => Future.successful(
+            Redirect(routes.IndexController.index)
+          )
         }
       }
     )

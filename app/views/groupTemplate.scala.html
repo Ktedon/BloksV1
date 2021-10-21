@@ -1,4 +1,4 @@
-@(form1: Form[GroupSearchForm], form: Form[ThreadCreateForm], currentUser: models.PublicUser, groupData: models.PublicGroup)(implicit request: RequestHeader, messagesProvider: MessagesProvider, threadsUsers: Seq[Tuple2[models.Tables.GroupThreadRow, models.Tables.BloksUserRow]])
+@(form1: Form[GroupSearchForm], form: Form[ThreadCreateForm], currentUser: models.Tables.BloksUserRow, groupData: models.Tables.BlokGroupRow)(implicit request: RequestHeader, messagesProvider: MessagesProvider, threadsUsers: Seq[Tuple2[models.Tables.GroupThreadRow, models.Tables.BloksUserRow]])
 
 @main("Welcome to Bloks") {
 

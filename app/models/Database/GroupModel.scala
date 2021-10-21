@@ -10,13 +10,10 @@ import models.Tables._
 class GroupModel(db: Database)(implicit ec: ExecutionContext) {
 
   def getGroups(schoolID: Int): Future[Seq[BlokGroupRow]] =
-    db.run(
-      BlokGroup.filter(_.school === schoolID).result
-    )
+    db.run(BlokGroup.filter(_.school === schoolID).result)
+
   def getGroup(groupId: Int): Future[Seq[BlokGroupRow]] =
-    db.run(
-      BlokGroup.filter(_.id === groupId).result
-    )
+    db.run(BlokGroup.filter(_.id === groupId).result)
 
   def createGroup(
       blokId: Int,
@@ -36,42 +33,24 @@ class GroupModel(db: Database)(implicit ec: ExecutionContext) {
         )
       ).map(_ > 0)
 
-  def getGroupsMembership(
-      userId: Int
-  ): Future[Seq[GroupMembershipRow]] =
-    db.run(
-      GroupMembership
-        .filter(_.userId === userId)
-        .result
-    )
+  def getGroupsMembership(userId: Int): Future[Seq[GroupMembershipRow]] =
+    db.run(GroupMembership.filter(_.userId === userId).result)
 
-  def addGroupsMembership(
-      userId: Int,
-      groupID: Int
-  ): Future[Boolean] =
+  def addGroupsMembership(userId: Int, groupID: Int): Future[Boolean] =
     db.run(
       GroupMembership += GroupMembershipRow(-1, groupID, userId, 0)
     ).map(_ > 0)
 
-  def deleteGroupsMembership(
-      userId: Int,
-      groupID: Int
-  ): Future[Boolean] =
+  def deleteGroupsMembership(userId: Int, groupID: Int): Future[Boolean] =
     db.run(
       GroupMembership
-        .filter(groupMembership =>
-          groupMembership.groupId === groupID &&
-            groupMembership.userId === userId
-        )
-        .delete
+        .filter(memship =>
+          memship.groupId === groupID && memship.userId === userId && memship.userId == "efj"
+        ).delete
     ).map(_ > 0)
 
-  def getGroupThreads(
-      groupID: Int
-  ): Future[Seq[GroupThreadRow]] =
-    db.run(
-      GroupThread.filter(_.groupId === groupID).result
-    )
+  def getGroupThreads(groupID: Int): Future[Seq[GroupThreadRow]] =
+    db.run(GroupThread.filter(_.groupId === groupID).result)
 
   def addGroupThread(
       groupID: Int,

@@ -71,14 +71,20 @@ class MessageController @Inject() (
                         }
                     }
                   case None =>
-                    Future.successful(BadRequest("Something wen't wrong."))
+                    Future.successful(
+                      Redirect(routes.IndexController.index)
+                    )
                 }
               }
             case None =>
-              Future.successful(Ok("Something went wrong. Try again later."))
+              Future.successful(
+                Redirect(routes.IndexController.index)
+              )
           }
         case None =>
-          Future.successful(Ok("Something went wrong. Try again later."))
+          Future.successful(
+            Redirect(routes.IndexController.index)
+          )
       }
   }
 
@@ -89,7 +95,9 @@ class MessageController @Inject() (
           // binding failure, you retrieve the form containing errors:
           Future.successful(
             BadRequest(
-              "Something wen't wrong."
+              views.html.error(
+                ErrorMessages.formError
+              )
             )
           )
         },
@@ -123,17 +131,19 @@ class MessageController @Inject() (
                                 BadRequest("Something wen't wrong.")
                             }
                         case None =>
-                          Future.successful(BadRequest("Something went wrong"))
+                          Future.successful(
+                            Redirect(routes.IndexController.index)
+                          )
                       }
                     }
                 case None =>
                   Future.successful(
-                    BadRequest("Something went wrong. Try again later.")
+                    Redirect(routes.IndexController.index)
                   )
               }
             case None =>
               Future.successful(
-                BadRequest("Something went wrong. Try again later.")
+                Redirect(routes.IndexController.index)
               )
           }
         }
@@ -169,15 +179,15 @@ class MessageController @Inject() (
           case Some(userFound) =>
             messageModel.getContacts(userFound.id).map { implicit contacts =>
               implicit val thing = HomeSearchForm.form
-              Ok(views.html.contacts(models.PublicUser.publicUserApply(userFound)))
+              Ok(views.html.contacts(userFound))
             }
           case None            =>
             Future.successful(
-              BadRequest("Something went wrong. Try again later.")
+              Redirect(routes.IndexController.index)
             )
         }
       }
     else
-      Future.successful(BadRequest("Something went wrong. Try again later."))
+      Future.successful(Redirect(routes.IndexController.index))
   }
 }
